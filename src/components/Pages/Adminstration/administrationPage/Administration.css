@@ -1,0 +1,101 @@
+/* Background Color for the Administration Page */
+.admin-page {
+  background: linear-gradient(
+    to right,
+    #6a5acd,
+    #4b0082
+  ); /* Beautiful gradient */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Admin Container */
+.admin-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.admin-container:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+.admin-header {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 1px;
+}
+
+/* Button Container */
+.admin-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Button Styles */
+.admin-buttons button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #6a5acd, #4b0082);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-buttons button:hover {
+  background: linear-gradient(45deg, #4b0082, #6a5acd);
+  transform: translateY(-5px);
+}
+
+.admin-buttons button:focus {
+  outline: none;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+  .admin-header {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .admin-buttons button {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+
+/* Responsive Design for Very Small Screens (Mobile) */
+@media (max-width: 480px) {
+  .admin-container {
+    padding: 15px;
+    width: 90%;
+  }
+
+  .admin-header {
+    font-size: 1rem;
+  }
+
+  .admin-buttons button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}

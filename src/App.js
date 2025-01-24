@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Main from "./Main";
+import OwnerLogin from "./components/Pages/Adminstration/LoginPage/OwnerLogin";
+import ManagerLogin from "./components/Pages/Adminstration/LoginPage/ManagerLogin";
+import OwnerSignUp from "./components/Pages/Adminstration/administrationPage/OwnerSignup/OwnerSignUp";
+import OwnerDashboard from "./components/Pages/OwnerDashboard/OwnerDashboard";
+import OwnerAdminsPage from "./components/Pages/OwnerDashboard/OwnerAdminsPage";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
+      <Routes>
+        <Route path="/" exact element={<Main />} />
+        <Route path="/owner-login" element={<OwnerLogin />} />
+        <Route path="/manager-login" element={<ManagerLogin />} />
+        <Route path="/owner-signup" element={<OwnerSignUp />} />
+
+        {/* Main Dashboard Routes */}
+        <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+
+        {/* Admin Dashboard Route */}
+
+        <Route path="/owner-admins" element={<OwnerAdminsPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

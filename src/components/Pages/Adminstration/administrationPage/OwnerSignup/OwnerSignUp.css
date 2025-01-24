@@ -1,0 +1,149 @@
+/* Container for the entire Sign-Up page */
+.owner-signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    #6a5acd,
+    #4b0082
+  ); /* Gradient background */
+  margin: 0;
+}
+
+/* Sign-Up Form Container */
+.signup-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for the form container */
+.signup-container:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading Styling */
+.owner-signup h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Input Field Styling */
+.signup-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Button Styling */
+.signup-container button {
+  padding: 12px 30px;
+  background-color: #6a5acd;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.signup-container button:hover {
+  background-color: #4b0082;
+  transform: translateY(-5px);
+}
+
+.signup-container button:focus {
+  outline: none;
+}
+
+/* Error Message Styling */
+.error {
+  color: red;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+/* Success Message Styling */
+.success {
+  color: green;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .owner-signup h2 {
+    font-size: 1.8rem;
+  }
+
+  .signup-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .signup-container button {
+    padding: 10px 25px;
+    font-size: 1rem;
+  }
+
+  .signup-container input {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .owner-signup h2 {
+    font-size: 1.5rem;
+  }
+
+  .signup-container input {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .signup-container button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+}
+
+/* Spinner style */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #6a5acd;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disable button when loading */
+.signup-container button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

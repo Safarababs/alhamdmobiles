@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../../firebase";
+import { toast, ToastContainer } from "react-toastify"; // Import both 'toast' and 'ToastContainer'
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import "./LoginPage.css";
 
 const OwnerLogin = () => {
@@ -9,6 +11,7 @@ const OwnerLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toastShown, setToastShown] = useState(false);
   const navigate = useNavigate();
 
   // 🔹 Redirect to dashboard if already logged in
@@ -19,8 +22,9 @@ const OwnerLogin = () => {
   }, [navigate]);
 
   const handleLogin = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
+    setError(""); // ✅ Clear previous errors before new login attempt
 
     const database = getDatabase(app);
     const ownersRef = ref(database, "owners");
@@ -28,6 +32,7 @@ const OwnerLogin = () => {
     try {
       const snapshot = await get(ownersRef);
       const ownersData = snapshot.val();
+
       let ownerFound = null;
 
       for (let key in ownersData) {
@@ -41,19 +46,32 @@ const OwnerLogin = () => {
       }
 
       if (ownerFound) {
-        localStorage.setItem("ownerToken", "true"); // Dummy token for now
-        localStorage.setItem("ownerName", ownerFound.username); // Store owner's name
-        navigate("/owner-dashboard");
+        localStorage.setItem("ownerToken", "true");
+        localStorage.setItem("ownerName", ownerFound.username);
+
+        // Trigger success toast
+        toast.success("Login successful!", { autoClose: 2000 });
+
+        setToastShown(true); // Mark toast as shown
       } else {
-        setError("Invalid username or password.");
+        toast.error("Invalid username or password.", { autoClose: 2000 }); // ✅ Ensure toast fires
       }
     } catch (err) {
-      setError("Error logging in. Please try again.");
       console.error("Error fetching owner data:", err);
+      toast.error("Error logging in. Please try again.", { autoClose: 2000 });
     } finally {
       setLoading(false);
     }
   };
+
+  // Redirect after toast is shown
+  useEffect(() => {
+    if (toastShown) {
+      setTimeout(() => {
+        navigate("/owner-dashboard");
+      }, 2000); // Ensure navigation after the toast stays visible
+    }
+  }, [toastShown, navigate]);
 
   return (
     <div className="login-page">
@@ -86,6 +104,9 @@ const OwnerLogin = () => {
           </button>
         </form>
       </div>
+
+      {/* Add ToastContainer here */}
+      <ToastContainer />
     </div>
   );
 };

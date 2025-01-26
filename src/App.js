@@ -9,12 +9,10 @@ import ManagerLogin from "./components/Pages/Adminstration/LoginPage/ManagerLogi
 import OwnerSignUp from "./components/Pages/Adminstration/administrationPage/OwnerSignup/OwnerSignUp";
 import OwnerDashboard from "./components/Pages/OwnerDashboard/OwnerDashboard";
 import OwnerAdminsPage from "./components/Pages/OwnerDashboard/OwnerAdminsPage";
-import Inventory from "./components/Pages/Inventory/Inventory";
 
 const App = () => {
   return (
-    <Router>
-      {/* Global Notification Container */}
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -29,7 +27,6 @@ const App = () => {
 
         {/* Main Dashboard Routes */}
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-        <Route path="/inventory" element={<Inventory />} />
 
         {/* Admin Dashboard Route */}
         <Route path="/owner-admins" element={<OwnerAdminsPage />} />

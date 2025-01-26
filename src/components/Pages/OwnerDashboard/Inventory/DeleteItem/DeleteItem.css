@@ -1,0 +1,68 @@
+.delete-item-section {
+  padding: 20px;
+}
+
+.item-details {
+  margin-bottom: 15px;
+}
+
+.item-details p {
+  margin: 5px 0;
+}
+
+button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #e60000;
+}
+
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.react-confirm-alert {
+  border-radius: 8px;
+  font-family: "Arial", sans-serif;
+}
+
+.react-confirm-alert-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.react-confirm-alert-button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.react-confirm-alert-button-group button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.react-confirm-alert-button-group button:hover {
+  background-color: #0056b3;
+}
+
+.react-confirm-alert-button-group button.cancel-button {
+  background-color: #ff4d4d;
+}
+
+.react-confirm-alert-button-group button.cancel-button:hover {
+  background-color: #e60000;
+}

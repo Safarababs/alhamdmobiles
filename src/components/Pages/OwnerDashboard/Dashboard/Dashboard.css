@@ -1,0 +1,105 @@
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.card h4 {
+  font-size: 18px;
+  color: #333;
+}
+
+.card p {
+  font-size: 22px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.charts-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.sales-pie-chart {
+  background: #f4f7fc;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+}
+
+.sales-pie-chart:hover {
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.2);
+  transform: scale(1.02);
+}
+
+.sales-pie-chart h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+.sales-pie-chart canvas {
+  width: 90% !important;
+  height: 90% !important;
+  max-width: 250px;
+  max-height: 250px;
+}
+
+@media screen and (max-width: 1024px) {
+  .charts-section {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-pie-chart {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.welcome-message {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  color: #333;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}

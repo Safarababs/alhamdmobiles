@@ -4,20 +4,29 @@ import app from "../../../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Users.css";
+import usePagination from "./Users List/usePagination";
+import UserList from "./Users List/UserList";
+import UserForm from "./Users List/UserForm";
+import Pagination from "./Pagination";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [newUserType, setNewUserType] = useState("");
+  const [viewType, setViewType] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [usersPerPage] = useState(10);
+  const [defaultOptionSelected, setDefaultOptionSelected] = useState(true);
+
   const [newUserData, setNewUserData] = useState({
     username: "",
     email: "",
     password: "",
     role: "",
-    shopName: "", // Added field for shopkeeper
-    shopAddress: "", // Added field for shopkeeper
-    phoneNumber: "", // Added field for shopkeeper
+    shopName: "",
+    shopAddress: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -25,6 +34,7 @@ const Users = () => {
   }, []);
 
   const fetchUsers = async () => {
+    setLoading(true);
     const database = getDatabase(app);
     const usersRef = ref(database, "users");
 
@@ -39,6 +49,8 @@ const Users = () => {
       }
     } catch (error) {
       toast.error("Failed to load users!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,7 +61,7 @@ const Users = () => {
     try {
       await remove(userRef);
       toast.success("User deleted successfully!");
-      fetchUsers(); // Refresh user list
+      fetchUsers();
     } catch (error) {
       toast.error("Failed to delete user!");
     }
@@ -61,7 +73,7 @@ const Users = () => {
       username: user.username,
       email: user.email,
       role: user.role,
-      password: "", // Avoid pre-filling password for security reasons
+      password: "",
     });
   };
 
@@ -73,7 +85,7 @@ const Users = () => {
       await update(userRef, newUserData);
       toast.success("User updated successfully!");
       setEditingUser(null);
-      fetchUsers(); // Refresh user list
+      fetchUsers();
     } catch (error) {
       toast.error("Failed to update user!");
     }
@@ -86,39 +98,108 @@ const Users = () => {
     try {
       await push(usersRef, newUserData);
       toast.success("User added successfully!");
-      setNewUserType(""); // Reset user type selection
+      setNewUserType("");
       setNewUserData({
         username: "",
         email: "",
         password: "",
         role: "",
-        shopName: "", // Reset form field for shopkeeper
-        shopAddress: "", // Reset form field for shopkeeper
-        phoneNumber: "", // Reset form field for shopkeeper
-      }); // Reset form data
-      fetchUsers(); // Refresh user list
+        shopName: "",
+        shopAddress: "",
+        phoneNumber: "",
+      });
+      fetchUsers();
     } catch (error) {
       toast.error("Failed to add user!");
     }
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
+  const filteredUsers = users.filter((user) => {
+    if (viewType === "shopkeepers") {
+      return user.role === "Shopkeeper";
+    } else if (viewType === "employees") {
+      return user.role === "Employee";
+    }
+    return (
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    );
+  });
+
+  const {
+    currentData: currentUsers,
+    totalPages,
+    paginate,
+  } = usePagination(filteredUsers, usersPerPage);
+
+  const totalShopkeepers = users.filter(
+    (user) => user.role === "Shopkeeper"
+  ).length;
+  const totalEmployees = users.filter(
+    (user) => user.role === "Employee"
+  ).length;
+
+  const handleOptionsChange = (e) => {
+    const selectedOption = e.target.value;
+
+    if (selectedOption === "default") {
+      setDefaultOptionSelected(true);
+    } else {
+      setDefaultOptionSelected(false);
+    }
+
+    if (selectedOption === "add-shopkeeper") {
+      setNewUserType("Shopkeeper");
+    } else if (selectedOption === "add-employee") {
+      setNewUserType("Employee");
+    } else if (selectedOption === "view-shopkeepers") {
+      setViewType("shopkeepers");
+    } else if (selectedOption === "view-employees") {
+      setViewType("employees");
+    } else if (selectedOption === "view-all") {
+      setViewType("all");
+    }
+  };
 
   return (
     <div className="users-section">
       <h3>Users</h3>
-      <div className="user-types">
-        <button onClick={() => setNewUserType("Shopkeeper")}>
-          Add Shopkeeper
-        </button>
-        <button onClick={() => setNewUserType("Employee")}>Add Employee</button>
-        <button onClick={() => setNewUserType("Walking Customer")}>
-          Add Walking Customer
-        </button>
+      <div className="user-summary">
+        <p>Total Shopkeepers: {totalShopkeepers}</p>
+        <p>Total Employees: {totalEmployees}</p>
+      </div>
+      <div className="view-buttons-container">
+        <div className="dropdown-options">
+          <select
+            onChange={handleOptionsChange}
+            className={defaultOptionSelected ? "default-option-selected" : ""}
+            defaultValue="default"
+          >
+            <option value="default" disabled>
+              Select an Option
+            </option>
+            <option value="add-shopkeeper">Add Shopkeeper</option>
+            <option value="add-employee">Add Employee</option>
+            <option value="view-shopkeepers">View Shopkeepers</option>
+            <option value="view-employees">View Employees</option>
+            <option value="view-all">View All Users</option>
+          </select>
+        </div>
+        <div className="view-buttons">
+          <button onClick={() => setNewUserType("Shopkeeper")}>
+            Add Shopkeeper
+          </button>
+          <button onClick={() => setNewUserType("Employee")}>
+            Add Employee
+          </button>
+          <button onClick={() => setViewType("shopkeepers")}>
+            All Shopkeepers
+          </button>
+          <button onClick={() => setViewType("employees")}>
+            All Employees
+          </button>
+          <button onClick={() => setViewType("all")}>View All Users</button>
+        </div>
       </div>
       <input
         type="text"
@@ -126,109 +207,24 @@ const Users = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <ul className="user-list">
-        {filteredUsers.map((user) => (
-          <li key={user.id}>
-            <span>{user.username}</span> <span>({user.email})</span>
-            <button onClick={() => handleEditUser(user)}>Edit</button>
-            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <div className="spinner">Loading...</div>
+      ) : (
+        <UserList
+          users={currentUsers}
+          onEditUser={handleEditUser}
+          onDeleteUser={handleDeleteUser}
+        />
+      )}
+      <Pagination totalPages={totalPages} paginate={paginate} />
       {(newUserType || editingUser) && (
-        <div className="user-form">
-          <h4>{editingUser ? "Edit User" : `Add ${newUserType}`}</h4>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={newUserData.username}
-              onChange={(e) =>
-                setNewUserData({ ...newUserData, username: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={newUserData.email}
-              onChange={(e) =>
-                setNewUserData({ ...newUserData, email: e.target.value })
-              }
-            />
-          </label>
-          {(!editingUser || newUserType === "Shopkeeper") && (
-            <>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  value={newUserData.password}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, password: e.target.value })
-                  }
-                />
-              </label>
-              <label>
-                Role:
-                <input
-                  type="text"
-                  value={newUserData.role}
-                  onChange={(e) =>
-                    setNewUserData({ ...newUserData, role: e.target.value })
-                  }
-                />
-              </label>
-              {newUserType === "Shopkeeper" && (
-                <>
-                  <label>
-                    Shop Name:
-                    <input
-                      type="text"
-                      value={newUserData.shopName}
-                      onChange={(e) =>
-                        setNewUserData({
-                          ...newUserData,
-                          shopName: e.target.value,
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Shop Address:
-                    <input
-                      type="text"
-                      value={newUserData.shopAddress}
-                      onChange={(e) =>
-                        setNewUserData({
-                          ...newUserData,
-                          shopAddress: e.target.value,
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Phone Number:
-                    <input
-                      type="text"
-                      value={newUserData.phoneNumber}
-                      onChange={(e) =>
-                        setNewUserData({
-                          ...newUserData,
-                          phoneNumber: e.target.value,
-                        })
-                      }
-                    />
-                  </label>
-                </>
-              )}
-            </>
-          )}
-          <button onClick={editingUser ? handleSaveUser : handleAddUser}>
-            {editingUser ? "Save" : "Add"}
-          </button>
-        </div>
+        <UserForm
+          newUserType={newUserType}
+          newUserData={newUserData}
+          setNewUserData={setNewUserData}
+          onSaveUser={editingUser ? handleSaveUser : handleAddUser}
+          editingUser={editingUser}
+        />
       )}
       <ToastContainer />
     </div>

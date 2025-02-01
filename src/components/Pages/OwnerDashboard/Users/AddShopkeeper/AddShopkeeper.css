@@ -1,0 +1,46 @@
+.add-shopkeeper-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-shopkeeper-form h4 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.add-shopkeeper-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #666;
+}
+
+.add-shopkeeper-form input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.add-shopkeeper-form input.error {
+  border-color: red;
+}
+
+.add-shopkeeper-form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-shopkeeper-form button:hover {
+  background-color: #0056b3;
+}

@@ -51,6 +51,8 @@
 .inventory-table table {
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto; /* Add horizontal scroll if needed */
+  display: block; /* Make table block to allow overflow */
 }
 
 .inventory-table th,
@@ -58,6 +60,7 @@
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .inventory-table th {
@@ -68,9 +71,29 @@
 @media screen and (max-width: 768px) {
   .inventory-cards {
     grid-template-columns: 1fr;
+    display: none;
   }
 
   .card button {
     width: 100%;
+  }
+
+  .dropdown-options {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .dropdown-options select {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    appearance: none;
+  }
+
+  .inventory-table table {
+    display: block; /* Make table block to allow overflow */
   }
 }

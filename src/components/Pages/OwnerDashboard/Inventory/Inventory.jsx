@@ -9,6 +9,10 @@ const Inventory = () => {
   const [activeComponent, setActiveComponent] = useState("view");
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const handleComponentChange = (e) => {
+    setActiveComponent(e.target.value);
+  };
+
   const handleViewInventory = () => {
     setActiveComponent("view");
   };
@@ -48,6 +52,15 @@ const Inventory = () => {
           <h4>Delete Item</h4>
           <button>Delete Item</button>
         </div>
+      </div>
+
+      <div className="dropdown-options">
+        <select onChange={handleComponentChange} defaultValue="view">
+          <option value="view">See Inventory</option>
+          <option value="add">Add Item</option>
+          <option value="update">Update Item</option>
+          <option value="delete">Delete Item</option>
+        </select>
       </div>
 
       {activeComponent === "view" && (

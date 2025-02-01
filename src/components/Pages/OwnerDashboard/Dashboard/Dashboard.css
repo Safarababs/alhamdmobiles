@@ -31,7 +31,7 @@
   margin-top: 40px;
 }
 
-.sales-pie-chart {
+.chart-container {
   background: #f4f7fc;
   padding: 20px;
   border-radius: 12px;
@@ -49,12 +49,12 @@
   margin-bottom: 30px;
 }
 
-.sales-pie-chart:hover {
+.chart-container:hover {
   box-shadow: 0 10px 25px rgba(0, 123, 255, 0.2);
   transform: scale(1.02);
 }
 
-.sales-pie-chart h3 {
+.chart-container h3 {
   margin-bottom: 20px;
   color: #333;
   font-size: 18px;
@@ -64,7 +64,7 @@
   z-index: 2;
 }
 
-.sales-pie-chart canvas {
+.chart-container canvas {
   width: 90% !important;
   height: 90% !important;
   max-width: 250px;
@@ -82,9 +82,37 @@
     grid-template-columns: 1fr;
   }
 
-  .sales-pie-chart {
+  .chart-container {
     width: 100%;
     height: auto;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .card h4 {
+    font-size: 16px;
+  }
+
+  .card p {
+    font-size: 20px;
+  }
+
+  .chart-container h3 {
+    font-size: 16px;
+  }
+
+  .chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 

@@ -1,0 +1,35 @@
+.customer-details {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.customer-details input {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media (min-width: 450px) {
+  .customer-details input {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .customer-details {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .customer-details input {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  .customer-details input:last-child {
+    margin-right: 0;
+  }
+}

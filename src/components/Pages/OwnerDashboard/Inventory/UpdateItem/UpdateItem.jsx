@@ -34,7 +34,7 @@ const UpdateItem = ({ selectedItem }) => {
 
   const handleUpdateItem = async () => {
     const database = getDatabase(app);
-    const itemRef = ref(database, `inventory/${selectedItem.id}`);
+    const itemRef = ref(database, `inventory/${selectedItem.key}`); // Use selectedItem.key to reference the correct item
 
     const updatedItem = {
       name: itemName,

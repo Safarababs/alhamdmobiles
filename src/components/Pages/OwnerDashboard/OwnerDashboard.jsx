@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../firebase";
-import { FaSun, FaMoon } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./OwnerDashboard.css";
+import "./Sidebar/Sidebar.css";
+import "./Header/Header.css";
 import Dashboard from "./Dashboard/Dashboard";
 import Orders from "./Orders/Orders";
 import Inventory from "./Inventory/Inventory";
 import Users from "./Users/Users";
 import Settings from "./Settings/Settings";
+import Sidebar from "./Sidebar/Sidebar";
+import Header from "./Header/Header";
+import AddSales from "./Sales/AddSales";
 
 const OwnerDashboard = () => {
   const navigate = useNavigate();
@@ -20,13 +24,39 @@ const OwnerDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [activeComponent, setActiveComponent] = useState("dashboard");
+  const [sidebarActive, setSidebarActive] = useState(false);
+  const [totalSales, setTotalSales] = useState(0); // New state for total sales
+  const [totalProfit, setTotalProfit] = useState(0); // New state for total profit
+  const [totalLoss, setTotalLoss] = useState(0); // New state for total loss
+  const [dailySalesCount, setDailySalesCount] = useState(0); // State for daily sales count
+  const [dailyNewCustomersCount, setDailyNewCustomersCount] = useState(0); // State for daily new customers count
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("daily"); // State for selected time period
 
   const handleSetActivePage = (page) => {
     setActiveComponent(page); // Set active component
+    setSidebarActive(false); // Close sidebar on page change
+  };
+
+  const toggleSidebar = () => {
+    setSidebarActive(!sidebarActive);
+  };
+
+  const closeSidebarOnScroll = () => {
+    if (window.innerWidth <= 768) {
+      setSidebarActive(false);
+    }
   };
 
   useEffect(() => {
     document.body.className = theme; // Adding theme class directly to body
+
+    // Add scroll event listener
+    window.addEventListener("scroll", closeSidebarOnScroll);
+
+    // Cleanup event listener on unmount
+    return () => {
+      window.removeEventListener("scroll", closeSidebarOnScroll);
+    };
   }, [theme]);
 
   useEffect(() => {
@@ -38,8 +68,8 @@ const OwnerDashboard = () => {
       fetchOwnerData(token);
     }
 
-    fetchSalesData();
-  }, [navigate, ownerName]);
+    fetchSalesData(selectedTimePeriod);
+  }, [navigate, ownerName, selectedTimePeriod]);
 
   const fetchOwnerData = async (token) => {
     setLoading(true);
@@ -59,21 +89,84 @@ const OwnerDashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching owner data:", error);
+      toast.error("Failed to fetch owner data.");
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchSalesData = async () => {
+  const fetchSalesData = async (timePeriod) => {
     const database = getDatabase(app);
     const salesRef = ref(database, "sales");
+    const today = new Date();
+    const startDate = new Date();
+
+    // Adjust startDate based on the selected time period
+    switch (timePeriod) {
+      case "weekly":
+        startDate.setDate(today.getDate() - 7);
+        break;
+      case "monthly":
+        startDate.setMonth(today.getMonth() - 1);
+        break;
+      case "yearly":
+        startDate.setFullYear(today.getFullYear() - 1);
+        break;
+      case "all-time":
+        startDate.setFullYear(today.getFullYear() - 100);
+        break;
+      default:
+        startDate.setDate(today.getDate() - 1);
+        break;
+    }
 
     try {
       const snapshot = await get(salesRef);
       if (snapshot.exists()) {
-        const salesArray = Object.values(snapshot.val());
+        let salesCount = 0;
+        let newCustomersCount = 0;
+        let totalSalesAmount = 0;
+        let totalProfitAmount = 0;
+        let totalLossAmount = 0;
+        const existingPhoneNumbers = new Set(); // Set to store existing phone numbers
+
+        // Fetch existing phone numbers from the customer database
+        const customersRef = ref(database, "customers");
+        const customersSnapshot = await get(customersRef);
+        if (customersSnapshot.exists()) {
+          customersSnapshot.forEach((childSnapshot) => {
+            const customer = childSnapshot.val();
+            if (customer.phoneNumber) {
+              existingPhoneNumbers.add(customer.phoneNumber);
+            }
+          });
+        }
+
+        snapshot.forEach((childSnapshot) => {
+          const sale = childSnapshot.val();
+          const saleDate = new Date(sale.date);
+          if (saleDate >= startDate && saleDate <= today) {
+            salesCount += 1;
+            totalSalesAmount += sale.total || 0;
+            if (!existingPhoneNumbers.has(sale.phoneNumber)) {
+              newCustomersCount += 1;
+              existingPhoneNumbers.add(sale.phoneNumber); // Add new customer phone number to the set
+            }
+            if (sale.items && Array.isArray(sale.items)) {
+              sale.items.forEach((item) => {
+                totalProfitAmount += item.profit || 0; // Default to 0 if profit is undefined
+                totalLossAmount += item.loss || 0; // Default to 0 if loss is undefined
+              });
+            }
+          }
+        });
+
+        setDailySalesCount(salesCount);
+        setDailyNewCustomersCount(newCustomersCount);
+        setTotalSales(totalSalesAmount); // Set total sales amount in state
+        setTotalProfit(totalProfitAmount); // Set total profit in state
+        setTotalLoss(totalLossAmount); // Set total loss in state
         toast.success("Sales data loaded successfully!");
-        console.log(salesArray);
       }
     } catch (error) {
       console.error("Error fetching sales data:", error);
@@ -94,108 +187,23 @@ const OwnerDashboard = () => {
     localStorage.setItem("theme", newTheme);
   };
 
-  const pieChartData = {
-    labels: ["Sales A", "Sales B", "Sales C"],
-    datasets: [
-      {
-        data: [300, 50, 100],
-        backgroundColor:
-          theme === "light"
-            ? ["#36a2eb", "#ff6384", "#ffcd56"] // Light Mode colors
-            : ["#36a2eb", "#ff6384", "#ffcd56"], // Dark Mode colors
-        hoverBackgroundColor:
-          theme === "dark"
-            ? ["#36a2eb", "#ff6384", "#ffcd56"]
-            : ["#4e73df", "#1cc88a", "#36b9cc"],
-      },
-    ],
-  };
-
-  const pieChartOptions = {
-    responsive: true,
-    plugins: {
-      tooltip: {
-        enabled: true,
-        titleColor: theme === "dark" ? "white" : "black",
-        bodyColor: theme === "dark" ? "white" : "black",
-      },
-      legend: {
-        position: "top",
-        labels: {
-          font: {
-            size: 14,
-          },
-          color: theme === "dark" ? "white" : "black",
-        },
-      },
-      datalabels: {
-        display: true,
-        color: theme === "dark" ? "white" : "black",
-        font: {
-          weight: "bold",
-          size: 14,
-        },
-        formatter: (value) => value,
-      },
-    },
-  };
-
   return (
     <div className={`owner-dashboard ${theme}`}>
-      <header className="dashboard-header">
-        <h2>Alhamd Mobiles Admin Panel</h2>
-        <div className="header-actions">
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${
-              theme === "light" ? "dark" : "light"
-            } theme`}
-          >
-            {theme === "light" ? <FaMoon /> : <FaSun />}
-          </button>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </header>
+      <Header
+        ownerName={ownerName}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        handleLogout={handleLogout}
+        toggleSidebar={toggleSidebar}
+      />
 
       <div className="dashboard-layout">
-        <aside className="sidebar">
-          <h3>Menu</h3>
-          <ul>
-            <li
-              className={activeComponent === "dashboard" ? "active" : ""}
-              onClick={() => handleSetActivePage("dashboard")}
-            >
-              <span className="icon">📊</span> Dashboard
-            </li>
-            <li
-              className={activeComponent === "orders" ? "active" : ""}
-              onClick={() => handleSetActivePage("orders")}
-            >
-              <span className="icon">🛒</span> Orders
-            </li>
-            <li
-              className={activeComponent === "inventory" ? "active" : ""}
-              onClick={() => handleSetActivePage("inventory")}
-            >
-              <span className="icon">📦</span> Inventory
-            </li>
-            <li
-              className={activeComponent === "users" ? "active" : ""}
-              onClick={() => handleSetActivePage("users")}
-            >
-              <span className="icon">👥</span> Users
-            </li>
-            <li
-              className={activeComponent === "settings" ? "active" : ""}
-              onClick={() => handleSetActivePage("settings")}
-            >
-              <span className="icon">⚙️</span> Settings
-            </li>
-          </ul>
-        </aside>
+        <Sidebar
+          activeComponent={activeComponent}
+          handleSetActivePage={handleSetActivePage}
+          sidebarActive={sidebarActive}
+          handleLogout={handleLogout}
+        />
 
         <main className="main-content">
           {loading ? (
@@ -206,21 +214,32 @@ const OwnerDashboard = () => {
               <p>Here’s a quick overview of your store.</p>
             </div>
           )}
-
+          <select
+            value={selectedTimePeriod}
+            onChange={(e) => setSelectedTimePeriod(e.target.value)}
+            className="time-period-select"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="all-time">All Time</option>
+          </select>
           {activeComponent === "dashboard" && (
             <Dashboard
-              pieChartData={pieChartData}
-              pieChartOptions={pieChartOptions}
+              totalSales={totalSales} // Pass total sales as a prop
+              totalProfit={totalProfit} // Pass total profit as a prop
+              totalLoss={totalLoss} // Pass total loss as a prop
+              dailySalesCount={dailySalesCount} // Pass daily sales count as a prop
+              dailyNewCustomersCount={dailyNewCustomersCount} // Pass daily new customers count as a prop
             />
           )}
-
           {activeComponent === "orders" && <Orders />}
-
           {activeComponent === "inventory" && <Inventory />}
-
           {activeComponent === "users" && <Users />}
-
           {activeComponent === "settings" && <Settings />}
+          {activeComponent === "addsales" && <AddSales />}{" "}
+          {/* AddSales component */}
         </main>
       </div>
       <ToastContainer />

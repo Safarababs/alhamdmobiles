@@ -14,14 +14,6 @@ const Inventory = () => {
     setActiveComponent(e.target.value);
   };
 
-  const handleViewInventory = () => {
-    setActiveComponent("view");
-  };
-
-  const handleAddItem = () => {
-    setActiveComponent("add");
-  };
-
   const handleDeleteItem = (item) => {
     setSelectedItem(item);
     setActiveComponent("delete");
@@ -41,7 +33,6 @@ const Inventory = () => {
           <option value="update">Update Item</option>
           <option value="delete">Delete Item</option>
           <option value="expenses">Add Expense</option>{" "}
-          {/* Add an option for Expenses */}
         </select>
       </div>
       {activeComponent === "view" && (

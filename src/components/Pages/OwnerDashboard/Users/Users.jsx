@@ -162,17 +162,23 @@ const Users = () => {
   };
 
   return (
-    <div className="users-section">
-      <h3>Users</h3>
-      <div className="user-summary">
-        <p>Total Shopkeepers: {totalShopkeepers}</p>
-        <p>Total Employees: {totalEmployees}</p>
+    <div className="alhamd-users-section">
+      <h3 className="alhamd-users-title">Users</h3>
+      <div className="alhamd-user-summary">
+        <p className="alhamd-user-summary-text">
+          Total Shopkeepers: {totalShopkeepers}
+        </p>
+        <p className="alhamd-user-summary-text">
+          Total Employees: {totalEmployees}
+        </p>
       </div>
-      <div className="view-buttons-container">
-        <div className="dropdown-options">
+      <div className="alhamd-view-buttons-container">
+        <div className="alhamd-dropdown-options">
           <select
             onChange={handleOptionsChange}
-            className={defaultOptionSelected ? "default-option-selected" : ""}
+            className={
+              defaultOptionSelected ? "alhamd-default-option-selected" : ""
+            }
             defaultValue="default"
           >
             <option value="default" disabled>
@@ -185,7 +191,7 @@ const Users = () => {
             <option value="view-all">View All Users</option>
           </select>
         </div>
-        <div className="view-buttons">
+        <div className="alhamd-view-buttons">
           <button onClick={() => setNewUserType("Shopkeeper")}>
             Add Shopkeeper
           </button>
@@ -206,9 +212,10 @@ const Users = () => {
         placeholder="Search users..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="alhamd-search-input"
       />
       {loading ? (
-        <div className="spinner">Loading...</div>
+        <div className="alhamd-spinner">Loading...</div>
       ) : (
         <UserList
           users={currentUsers}

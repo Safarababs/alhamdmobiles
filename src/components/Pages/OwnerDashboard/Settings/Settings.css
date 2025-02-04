@@ -1,15 +1,32 @@
-.settings-section {
+.alhamd-settings-section {
   padding: 20px;
+  background: var(--settings-section-bg-color);
+  color: var(--settings-section-text-color);
 }
 
-.settings-section h3 {
+.alhamd-settings-title {
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: var(--settings-section-title-color);
 }
 
-.settings-section p {
+.alhamd-settings-description {
   font-size: 16px;
-  color: #666;
+  color: var(--settings-section-paragraph-color);
+}
+
+/* Theme Variables */
+:root {
+  --settings-section-bg-color: #fff;
+  --settings-section-text-color: #333;
+  --settings-section-title-color: #333;
+  --settings-section-paragraph-color: #666;
+}
+
+[data-theme="dark"] {
+  --settings-section-bg-color: #333;
+  --settings-section-text-color: #ecf0f1;
+  --settings-section-title-color: #ecf0f1;
+  --settings-section-paragraph-color: #bbb;
 }

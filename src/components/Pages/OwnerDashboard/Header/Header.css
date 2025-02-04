@@ -1,75 +1,93 @@
-/* Header Styles */
-.dashboard-header {
-  background: #2c3e50;
-  color: white;
-  padding: 15px 20px;
+.alhamd-dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #ddd;
+  padding: 1rem;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.dashboard-header h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
+.alhamd-dashboard-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-.header-actions {
+.alhamd-header-actions {
   display: flex;
-  gap: 10px;
+  align-items: center;
 }
 
-.theme-toggle {
-  background: transparent;
+.alhamd-sidebar-toggle,
+.alhamd-theme-toggle {
+  background: none;
   border: none;
-  font-size: 18px;
+  font-size: 1.5rem;
+  color: var(--icon-color);
   cursor: pointer;
-  color: white;
+  margin-left: 1rem;
+  padding: 0.5rem;
+  transition: background-color 0.3s;
 }
 
-.logout-button {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
+.alhamd-sidebar-toggle:hover,
+.alhamd-theme-toggle:hover {
+  background-color: var(--hover-bg-color);
 }
 
-.logout-button:hover {
-  background: #e60000;
-}
-
-.sidebar-toggle {
-  display: none;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
-}
-
-.desktop-only {
-  display: inline-block;
-}
-
-.mobile-only {
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
-  .header-actions .sidebar-toggle {
-    display: block;
-    gap: 20px;
+/* Media Queries for Responsiveness */
+@media (max-width: 750px) {
+  .alhamd-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .desktop-only {
-    display: none;
+  .alhamd-dashboard-header h2 {
+    font-size: 1.2rem;
   }
 
-  .mobile-only {
-    display: inline-block;
+  .alhamd-header-actions {
+    margin-top: 0.5rem;
   }
+
+  .alhamd-sidebar-toggle,
+  .alhamd-theme-toggle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .alhamd-dashboard-header h2 {
+    font-size: 1rem;
+  }
+
+  .alhamd-sidebar-toggle,
+  .alhamd-theme-toggle {
+    font-size: 1rem;
+  }
+}
+
+/* Theme Variables */
+:root {
+  --primary-bg-color: #f5f5f5;
+  --primary-text-color: #2c3e50;
+  --icon-color: #2c3e50;
+  --border-color: #bdc3c7;
+  --hover-bg-color: #ecf0f1;
+}
+
+[data-theme="dark"] {
+  --primary-bg-color: #2c3e50;
+  --primary-text-color: #ecf0f1;
+  --icon-color: #ecf0f1;
+  --border-color: #34495e;
+  --hover-bg-color: #2c3e50;
+}
+
+[data-theme="dark"] {
+  --primary-bg-color: #2c3e50;
+  --primary-text-color: #ecf0f1;
+  --icon-color: #ecf0f1;
+  --border-color: #34495e;
+  --hover-bg-color: #2c3e50;
 }

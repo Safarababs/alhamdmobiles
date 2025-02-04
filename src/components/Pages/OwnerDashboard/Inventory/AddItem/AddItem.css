@@ -1,34 +1,110 @@
-.add-item-section {
-  padding: 20px;
+/* AddItem.css */
+
+/* Light Theme */
+:root {
+  --background-color: #f4f4f9;
+  --text-color: #333333;
+  --label-color: #555555;
+  --input-background-color: #ffffff;
+  --input-border-color: #ccc;
+  --button-background-color: #007bff;
+  --button-hover-background-color: #0056b3;
 }
 
-.form-group {
+/* Dark Theme */
+[data-theme="dark"] {
+  --background-color: #333333;
+  --text-color: #f4f4f9;
+  --label-color: #cccccc;
+  --input-background-color: #555555;
+  --input-border-color: #777777;
+  --button-background-color: #1e90ff;
+  --button-hover-background-color: #1c7cd6;
+}
+
+.add-item-section {
+  padding: 20px;
+  width: 800px; /* Set a max width for better layout */
+  margin: 0 auto; /* Center align the section */
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+}
+
+.add-item-title {
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.add-item-form-group {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.add-item-label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
+  color: var(--label-color);
 }
 
-.form-group input {
+.add-item-input,
+.add-item-select {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: var(--input-background-color);
+  border: 1px solid var(--input-border-color);
   border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+  color: var(--text-color);
 }
 
-button {
-  background: #007bff;
+.add-item-button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--button-background-color);
   color: white;
   border: none;
-  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background: #0056b3;
+.add-item-button:hover {
+  background-color: var(--button-hover-background-color);
+}
+
+@media screen and (max-width: 768px) {
+  .add-item-section {
+    padding: 15px;
+    width: 600px; /* Ensure full width on smaller screens */
+  }
+
+  .add-item-input,
+  .add-item-select,
+  .add-item-button {
+    padding: 8px;
+  }
+
+  .add-item-title {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .add-item-section {
+    padding: 10px;
+    width: 280px; /* Ensure full width on mobile screens */
+  }
+
+  .add-item-input,
+  .add-item-select,
+  .add-item-button {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .add-item-title {
+    font-size: 16px;
+  }
 }

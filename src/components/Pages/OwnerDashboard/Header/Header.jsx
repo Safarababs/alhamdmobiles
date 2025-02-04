@@ -1,23 +1,17 @@
 import React from "react";
 import { FaSun, FaMoon, FaBars } from "react-icons/fa";
-import "./Header.css";
+import "./Header.css"; // Import the CSS file
 
-const Header = ({
-  ownerName,
-  theme,
-  toggleTheme,
-  handleLogout,
-  toggleSidebar,
-}) => {
+const Header = ({ theme, toggleTheme, toggleSidebar }) => {
   return (
-    <header className="dashboard-header">
+    <header className="alhamd-dashboard-header">
       <h2>Alhamd Mobiles Admin Panel</h2>
-      <div className="header-actions">
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
+      <div className="alhamd-header-actions">
+        <button className="alhamd-sidebar-toggle" onClick={toggleSidebar}>
           <FaBars />
         </button>
         <button
-          className="theme-toggle"
+          className="alhamd-theme-toggle"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
         >

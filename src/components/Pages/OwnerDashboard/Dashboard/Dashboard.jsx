@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -9,12 +10,14 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
+  Filler,
 } from "chart.js";
 import { Pie, Bar, Line } from "react-chartjs-2";
+import { getDatabase, ref, onValue } from "firebase/database";
+import app from "../../../../firebase";
 import "./Dashboard.css";
 import Sales from "./Sales/sales";
 
-// Register the necessary Chart.js components
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -23,7 +26,8 @@ ChartJS.register(
   LineElement,
   CategoryScale,
   LinearScale,
-  PointElement
+  PointElement,
+  Filler
 );
 
 const Dashboard = ({
@@ -32,8 +36,28 @@ const Dashboard = ({
   totalLoss,
   dailySalesCount,
   dailyNewCustomersCount,
+  selectedTimePeriod,
+  setSelectedTimePeriod,
 }) => {
-  // Data for Pie Chart (Total Profit)
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
+  useEffect(() => {
+    const database = getDatabase(app);
+    const expensesRef = ref(database, "expenses");
+
+    onValue(expensesRef, (snapshot) => {
+      let expenses = 0;
+      snapshot.forEach((childSnapshot) => {
+        const expense = childSnapshot.val();
+        expenses += expense.amount;
+      });
+      setTotalExpenses(expenses);
+    });
+  }, []);
+
+  // Calculate adjusted total sales
+  const adjustedTotalSales = totalSales - totalExpenses;
+
   const pieChartData = {
     labels: ["Total Profit"],
     datasets: [
@@ -47,13 +71,12 @@ const Dashboard = ({
     ],
   };
 
-  // Data for Bar Chart (Total Sales)
   const barChartData = {
     labels: ["Total Sales"],
     datasets: [
       {
         label: "Total Sales",
-        data: [totalSales],
+        data: [adjustedTotalSales],
         backgroundColor: ["#36a2eb"],
         borderColor: ["#36a2eb"],
         borderWidth: 1,
@@ -61,7 +84,6 @@ const Dashboard = ({
     ],
   };
 
-  // Data for Line Chart (Total Loss)
   const lineChartData = {
     labels: ["Total Loss"],
     datasets: [
@@ -100,10 +122,23 @@ const Dashboard = ({
 
   return (
     <div>
+      <div className="dashboard-time-period">
+        <select
+          value={selectedTimePeriod}
+          onChange={(e) => setSelectedTimePeriod(e.target.value)}
+          className="dashboard-time-period-select"
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="all-time">All Time</option>
+        </select>
+      </div>
       <div className="dashboard-cards">
         <div className="card">
           <h4>Total Sales</h4>
-          <p>₨ {totalSales.toFixed(2)}</p>
+          <p>₨ {adjustedTotalSales.toFixed(2)}</p>
         </div>
         <div className="card">
           <h4>Total Profit</h4>
@@ -114,11 +149,11 @@ const Dashboard = ({
           <p>₨ {totalLoss.toFixed(2)}</p>
         </div>
         <div className="card">
-          <h4>Orders Today</h4>
+          <h4>Orders</h4>
           <p>{dailySalesCount}</p>
         </div>
         <div className="card">
-          <h4>New Customers Today</h4>
+          <h4>New Customers</h4>
           <p>{dailyNewCustomersCount}</p>
         </div>
       </div>
@@ -136,7 +171,7 @@ const Dashboard = ({
           <Line data={lineChartData} options={chartOptions} />
         </div>
       </div>
-      <Sales />
+      <Sales selectedTimePeriod={selectedTimePeriod} />
     </div>
   );
 };

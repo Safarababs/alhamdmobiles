@@ -3,7 +3,7 @@ import { getDatabase, ref, push } from "firebase/database";
 import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./AddEmployee.css";
+import "./AddEmployee.css"; // Import the CSS file
 
 const AddEmployee = ({ onSave }) => {
   const [employeeData, setEmployeeData] = useState({
@@ -64,54 +64,54 @@ const AddEmployee = ({ onSave }) => {
   };
 
   return (
-    <div className="add-employee-form">
-      <h4>Add Employee</h4>
-      <label>
+    <div className="alhamd-add-employee-form">
+      <h4 className="alhamd-form-title">Add Employee</h4>
+      <label className="alhamd-form-label">
         *Username:
         <input
           type="text"
           name="username"
           value={employeeData.username}
           onChange={handleInputChange}
-          className={inputErrors.username ? "error" : ""}
+          className={inputErrors.username ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *Email:
         <input
           type="email"
           name="email"
           value={employeeData.email}
           onChange={handleInputChange}
-          className={inputErrors.email ? "error" : ""}
+          className={inputErrors.email ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *Password:
         <input
           type="password"
           name="password"
           value={employeeData.password}
           onChange={handleInputChange}
-          className={inputErrors.password ? "error" : ""}
+          className={inputErrors.password ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *CNIC:
         <input
           type="text"
           name="cnic"
           value={employeeData.cnic}
           onChange={handleInputChange}
-          className={inputErrors.cnic ? "error" : ""}
+          className={inputErrors.cnic ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
-        Bank Account Number(Optional)
+      <label className="alhamd-form-label">
+        Bank Account Number (Optional)
         <input
           type="text"
           name="bankAccountNumber"
@@ -119,40 +119,42 @@ const AddEmployee = ({ onSave }) => {
           onChange={handleInputChange}
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *Salary:
         <input
           type="number"
           name="salary"
           value={employeeData.salary}
           onChange={handleInputChange}
-          className={inputErrors.salary ? "error" : ""}
+          className={inputErrors.salary ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *Phone Number:
         <input
           type="text"
           name="phoneNumber"
           value={employeeData.phoneNumber}
           onChange={handleInputChange}
-          className={inputErrors.phoneNumber ? "error" : ""}
+          className={inputErrors.phoneNumber ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <label>
+      <label className="alhamd-form-label">
         *Address:
         <input
           type="text"
           name="shopAddress"
-          value={employeeData.address}
+          value={employeeData.shopAddress}
           onChange={handleInputChange}
-          className={inputErrors.address ? "error" : ""}
+          className={inputErrors.shopAddress ? "alhamd-input-error" : ""}
           required
         />
       </label>
-      <button onClick={handleAddEmployee}>Add Employee</button>
+      <button onClick={handleAddEmployee} className="alhamd-add-button">
+        Add Employee
+      </button>
     </div>
   );
 };

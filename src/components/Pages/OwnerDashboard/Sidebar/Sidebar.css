@@ -1,7 +1,7 @@
 /* Sidebar Styles */
-.sidebar {
-  background: #2c3e50;
-  color: white;
+.alhamd-sidebar {
+  background: var(--sidebar-bg-color);
+  color: var(--sidebar-text-color);
   width: 250px;
   padding: 20px;
   min-height: 100vh;
@@ -11,22 +11,22 @@
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar h3 {
+.alhamd-sidebar h3 {
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  color: var(--sidebar-text-color);
   text-transform: uppercase;
 }
 
-.sidebar ul {
+.alhamd-sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
 }
 
-.sidebar ul li {
+.alhamd-sidebar ul li {
   padding: 12px 25px;
   cursor: pointer;
   font-size: 16px;
@@ -36,26 +36,26 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  background-color: #fff;
-  color: #007bff;
+  background-color: var(--sidebar-item-bg-color);
+  color: var(--sidebar-item-text-color);
 }
 
-.sidebar ul li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #007bff;
+.alhamd-sidebar ul li:hover {
+  background-color: var(--sidebar-item-hover-bg-color);
+  color: var(--sidebar-item-hover-text-color);
   box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
   transform: translateX(10px);
 }
 
-.sidebar ul li .icon {
+.alhamd-sidebar ul li .alhamd-icon {
   margin-right: 15px;
   font-size: 20px;
   transition: all 0.3s ease;
 }
 
-.sidebar ul li.active {
-  background: #007bff;
-  color: white;
+.alhamd-sidebar ul li.active {
+  background: var(--sidebar-active-bg-color);
+  color: var(--sidebar-active-text-color);
   padding-left: 20px;
   font-weight: bold;
   border-radius: 8px;
@@ -64,11 +64,11 @@
   transition: all 0.3s ease;
 }
 
-.sidebar ul li.active .icon {
+.alhamd-sidebar ul li.active .alhamd-icon {
   transform: rotate(45deg);
 }
 
-.sidebar ul li a {
+.alhamd-sidebar ul li a {
   color: inherit;
   text-decoration: none;
   display: flex;
@@ -76,51 +76,78 @@
   width: 100%;
 }
 
-.sidebar ul li a:hover {
+.alhamd-sidebar ul li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   padding-left: 30px;
 }
 
-.logout-button {
+.alhamd-logout-button {
   display: flex;
   align-items: center;
   background: transparent;
   border: none;
   font-size: 16px;
-  color: #ff4d4d;
+  color: var(--logout-text-color);
   cursor: pointer;
 }
 
-.logout-button:hover {
-  color: #e60000;
+.alhamd-logout-button:hover {
+  color: var(--logout-hover-text-color);
 }
 
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
-  .sidebar {
+  .alhamd-sidebar {
     width: 100%;
     padding: 15px;
     display: none; /* Hide sidebar by default on mobile */
   }
 
-  .sidebar.active {
+  .alhamd-sidebar.active {
     display: flex; /* Show sidebar when active on mobile */
   }
 
-  .sidebar ul {
+  .alhamd-sidebar ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
   }
 
-  .sidebar ul li {
+  .alhamd-sidebar ul li {
     flex-basis: calc(50% - 10px);
     margin-bottom: 10px;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .sidebar ul li {
+  .alhamd-sidebar ul li {
     flex-basis: calc(100% - 10px);
   }
+}
+
+/* Theme Variables */
+:root {
+  --sidebar-bg-color: #2c3e50;
+  --sidebar-text-color: #fff;
+  --sidebar-item-bg-color: #fff;
+  --sidebar-item-text-color: #007bff;
+  --sidebar-item-hover-bg-color: rgba(255, 255, 255, 0.2);
+  --sidebar-item-hover-text-color: #007bff;
+  --sidebar-active-bg-color: #007bff;
+  --sidebar-active-text-color: #fff;
+  --logout-text-color: #ff4d4d;
+  --logout-hover-text-color: #e60000;
+}
+
+[data-theme="dark"] {
+  --sidebar-bg-color: #333;
+  --sidebar-text-color: #fff;
+  --sidebar-item-bg-color: #444;
+  --sidebar-item-text-color: #ecf0f1;
+  --sidebar-item-hover-bg-color: rgba(68, 68, 68, 0.2);
+  --sidebar-item-hover-text-color: #ecf0f1;
+  --sidebar-active-bg-color: #007bff;
+  --sidebar-active-text-color: #fff;
+  --logout-text-color: #ff4d4d;
+  --logout-hover-text-color: #e60000;
 }

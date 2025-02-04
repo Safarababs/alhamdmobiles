@@ -1,79 +1,101 @@
-.user-table {
+.alhamd-responsive-table {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.alhamd-user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  background-color: var(--table-bg-color);
 }
 
-.user-table th,
-.user-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.alhamd-table-head {
+  background-color: var(--table-header-bg-color);
+}
+
+.alhamd-table-header {
+  padding: 12px 15px;
+  border: 1px solid var(--table-border-color);
   text-align: left;
+  color: var(--table-header-text-color);
 }
 
-.user-table th {
-  background-color: #007bff;
-  color: white;
+.alhamd-table-body {
+  background-color: var(--table-bg-color);
 }
 
-.user-table tr:hover {
-  background-color: #f1f1f1;
+.alhamd-table-row:nth-child(even) {
+  background-color: var(--table-row-even-bg-color);
 }
 
-.user-table th,
-.user-table button {
+.alhamd-table-row:hover {
+  background-color: var(--table-row-hover-bg-color);
+}
+
+.alhamd-table-cell {
+  padding: 12px 15px;
+  border: 1px solid var(--table-border-color);
+  text-align: left;
+  color: var(--table-text-color);
+}
+
+.alhamd-edit-button {
+  padding: 5px 10px;
+  background-color: var(--edit-button-bg-color);
+  color: var(--edit-button-text-color);
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Responsive design */
-@media screen and (max-width: 768px) {
-  .responsive-table {
-    overflow-x: auto;
-  }
+.alhamd-edit-button:hover {
+  background-color: var(--edit-button-hover-bg-color);
+}
 
-  .user-table {
-    display: flex;
-    flex-direction: column;
-  }
+.alhamd-delete-button {
+  padding: 5px 10px;
+  background-color: var(--delete-button-bg-color);
+  color: var(--delete-button-text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .user-table thead {
-    display: none;
-  }
+.alhamd-delete-button:hover {
+  background-color: var(--delete-button-hover-bg-color);
+}
 
-  .user-table tr {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-  }
+/* Theme Variables */
+:root {
+  --table-bg-color: #ffffff;
+  --table-border-color: #dddddd;
+  --table-text-color: #333333;
+  --table-header-bg-color: #f2f2f2;
+  --table-header-text-color: #333333;
+  --table-row-even-bg-color: #f9f9f9;
+  --table-row-hover-bg-color: #f1f1f1;
+  --edit-button-bg-color: #28a745;
+  --edit-button-text-color: #ffffff;
+  --edit-button-hover-bg-color: #218838;
+  --delete-button-bg-color: #dc3545;
+  --delete-button-text-color: #ffffff;
+  --delete-button-hover-bg-color: #c82333;
+}
 
-  .user-table td {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border: none;
-    position: relative;
-  }
-
-  .user-table td:before {
-    content: attr(data-label);
-    flex-basis: 50%;
-    font-weight: bold;
-    padding-right: 10px;
-  }
-
-  .user-table td button {
-    flex-basis: 20%;
-    margin-left: 10px;
-  }
-
-  .user-table td:before {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-  }
-
-  .user-table td {
-    padding-left: 120px;
-  }
+[data-theme="dark"] {
+  --table-bg-color: #333333;
+  --table-border-color: #555555;
+  --table-text-color: #ecf0f1;
+  --table-header-bg-color: #444444;
+  --table-header-text-color: #ecf0f1;
+  --table-row-even-bg-color: #3a3a3a;
+  --table-row-hover-bg-color: #555555;
+  --edit-button-bg-color: #28a745;
+  --edit-button-text-color: #ffffff;
+  --edit-button-hover-bg-color: #218838;
+  --delete-button-bg-color: #dc3545;
+  --delete-button-text-color: #ffffff;
+  --delete-button-hover-bg-color: #c82333;
 }

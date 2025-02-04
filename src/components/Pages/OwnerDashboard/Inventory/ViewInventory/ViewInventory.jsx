@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../../../firebase";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ViewInventory.css";
 
@@ -59,8 +59,9 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
 
   return (
     <div className="view-inventory-section">
-      <div className="search-bar">
+      <div className="view-inventory-search-bar">
         <input
+          className="view-inventory-search-input"
           type="text"
           placeholder="Search by item code or name..."
           value={searchTerm}
@@ -68,8 +69,12 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
         />
       </div>
 
-      <div className="filters">
-        <select value={selectedBrand} onChange={handleBrandChange}>
+      <div className="view-inventory-filters">
+        <select
+          className="view-inventory-brand-select"
+          value={selectedBrand}
+          onChange={handleBrandChange}
+        >
           <option value="">All Brands</option>
           <option value="Ronin">Ronin</option>
           <option value="Faster">Faster</option>
@@ -77,7 +82,11 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
           {/* Add other brands here */}
         </select>
 
-        <select value={selectedCategory} onChange={handleCategoryChange}>
+        <select
+          className="view-inventory-category-select"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
           <option value="">All Categories</option>
           <option value="Smart Watches">Smart Watches</option>
           <option value="Wireless Chargers">Wireless Chargers</option>
@@ -86,43 +95,55 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
         </select>
       </div>
 
-      <div className="inventory-table">
-        <table>
-          <thead>
+      <div className="view-inventory-table">
+        <table className="view-inventory-table-element">
+          <thead className="view-inventory-table-head">
             <tr>
-              <th>Item Code</th>
-              <th>Item Name</th>
-              <th>Purchase Price</th>
-              <th>Wholesale Price</th>
-              <th>Retail Price</th>
-              <th>Qty</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Actions</th>
+              <th className="view-inventory-table-th">Item Code</th>
+              <th className="view-inventory-table-th">Item Name</th>
+              <th className="view-inventory-table-th">Purchase Price</th>
+              <th className="view-inventory-table-th">Wholesale Price</th>
+              <th className="view-inventory-table-th">Retail Price</th>
+              <th className="view-inventory-table-th">Qty</th>
+              <th className="view-inventory-table-th">Brand</th>
+              <th className="view-inventory-table-th">Category</th>
+              <th className="view-inventory-table-th">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="view-inventory-table-body">
             {filteredInventory.map((item, index) => (
-              <tr key={index}>
-                <td>{item.code}</td>
-                <td>{item.name}</td>
-                <td>{item.purchasePrice}</td>
-                <td>{item.wholesalePrice}</td>
-                <td>{item.retailPrice}</td>
-                <td>{item.qty}</td>
-                <td>{item.brand}</td>
-                <td>{item.category}</td>
-                <td>
-                  <button onClick={() => onUpdate(item)}>Update</button>
-                  <button onClick={() => onDelete(item)}>Delete</button>
+              <tr className="view-inventory-table-row" key={index}>
+                <td className="view-inventory-table-td">{item.code}</td>
+                <td className="view-inventory-table-td">{item.name}</td>
+                <td className="view-inventory-table-td">
+                  {item.purchasePrice}
+                </td>
+                <td className="view-inventory-table-td">
+                  {item.wholesalePrice}
+                </td>
+                <td className="view-inventory-table-td">{item.retailPrice}</td>
+                <td className="view-inventory-table-td">{item.qty}</td>
+                <td className="view-inventory-table-td">{item.brand}</td>
+                <td className="view-inventory-table-td">{item.category}</td>
+                <td className="view-inventory-table-td">
+                  <button
+                    className="view-inventory-button-update"
+                    onClick={() => onUpdate(item)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="view-inventory-button-delete"
+                    onClick={() => onDelete(item)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <ToastContainer />
     </div>
   );
 };

@@ -226,8 +226,8 @@ const AddSales = () => {
     : [];
 
   return (
-    <div className="add-sales">
-      <h2>Add Sales</h2>
+    <div className="add-sales-unique">
+      <h2 className="add-sales-title-unique">Add Sales</h2>
       <CustomerDetails
         customerName={customerName}
         setCustomerName={setCustomerName}
@@ -259,7 +259,10 @@ const AddSales = () => {
         onPriceChange={handlePriceChange}
         onDeleteItem={handleDeleteItem}
       />
-      <button className="submit-sale" onClick={handleSubmitSale}>
+      <button
+        className="add-sales-submit-button-unique"
+        onClick={handleSubmitSale}
+      >
         Submit Sale
       </button>
     </div>

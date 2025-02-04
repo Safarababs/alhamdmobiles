@@ -4,6 +4,7 @@ import AddItem from "./AddItem/AddItem";
 import DeleteItem from "./DeleteItem/DeleteItem";
 import UpdateItem from "./UpdateItem/UpdateItem";
 import ViewInventory from "./ViewInventory/ViewInventory";
+import Expenses from "./Expenses/Expenses"; // Import the Expenses component
 
 const Inventory = () => {
   const [activeComponent, setActiveComponent] = useState("view");
@@ -33,36 +34,16 @@ const Inventory = () => {
 
   return (
     <div className="inventory-section">
-      <h3>Inventory</h3>
-
-      <div className="inventory-cards">
-        <div className="card" onClick={handleViewInventory}>
-          <h4>See Inventory</h4>
-          <button>See Inventory</button>
-        </div>
-        <div className="card" onClick={handleAddItem}>
-          <h4>Add Item</h4>
-          <button>Add Item</button>
-        </div>
-        <div className="card" onClick={() => handleUpdateItem(null)}>
-          <h4>Update Item</h4>
-          <button>Update Item</button>
-        </div>
-        <div className="card" onClick={() => handleDeleteItem(null)}>
-          <h4>Delete Item</h4>
-          <button>Delete Item</button>
-        </div>
-      </div>
-
       <div className="dropdown-options">
         <select onChange={handleComponentChange} defaultValue="view">
           <option value="view">See Inventory</option>
           <option value="add">Add Item</option>
           <option value="update">Update Item</option>
           <option value="delete">Delete Item</option>
+          <option value="expenses">Add Expense</option>{" "}
+          {/* Add an option for Expenses */}
         </select>
       </div>
-
       {activeComponent === "view" && (
         <ViewInventory
           onDelete={handleDeleteItem}
@@ -74,6 +55,8 @@ const Inventory = () => {
       {activeComponent === "update" && selectedItem && (
         <UpdateItem selectedItem={selectedItem} />
       )}
+      {activeComponent === "expenses" && <Expenses />}{" "}
+      {/* Render the Expenses component */}
     </div>
   );
 };

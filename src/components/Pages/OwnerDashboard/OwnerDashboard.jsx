@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../firebase";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./OwnerDashboard.css";
-import "./Sidebar/Sidebar.css";
-import "./Header/Header.css";
 import Dashboard from "./Dashboard/Dashboard";
 import Orders from "./Orders/Orders";
 import Inventory from "./Inventory/Inventory";
@@ -25,16 +23,16 @@ const OwnerDashboard = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [sidebarActive, setSidebarActive] = useState(false);
-  const [totalSales, setTotalSales] = useState(0); // New state for total sales
-  const [totalProfit, setTotalProfit] = useState(0); // New state for total profit
-  const [totalLoss, setTotalLoss] = useState(0); // New state for total loss
-  const [dailySalesCount, setDailySalesCount] = useState(0); // State for daily sales count
-  const [dailyNewCustomersCount, setDailyNewCustomersCount] = useState(0); // State for daily new customers count
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState("daily"); // State for selected time period
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
+  const [totalLoss, setTotalLoss] = useState(0);
+  const [dailySalesCount, setDailySalesCount] = useState(0);
+  const [dailyNewCustomersCount, setDailyNewCustomersCount] = useState(0);
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState("daily");
 
   const handleSetActivePage = (page) => {
-    setActiveComponent(page); // Set active component
-    setSidebarActive(false); // Close sidebar on page change
+    setActiveComponent(page);
+    setSidebarActive(false);
   };
 
   const toggleSidebar = () => {
@@ -48,12 +46,8 @@ const OwnerDashboard = () => {
   };
 
   useEffect(() => {
-    document.body.className = theme; // Adding theme class directly to body
-
-    // Add scroll event listener
+    document.documentElement.setAttribute("data-theme", theme);
     window.addEventListener("scroll", closeSidebarOnScroll);
-
-    // Cleanup event listener on unmount
     return () => {
       window.removeEventListener("scroll", closeSidebarOnScroll);
     };
@@ -101,7 +95,6 @@ const OwnerDashboard = () => {
     const today = new Date();
     const startDate = new Date();
 
-    // Adjust startDate based on the selected time period
     switch (timePeriod) {
       case "weekly":
         startDate.setDate(today.getDate() - 7);
@@ -128,9 +121,8 @@ const OwnerDashboard = () => {
         let totalSalesAmount = 0;
         let totalProfitAmount = 0;
         let totalLossAmount = 0;
-        const existingPhoneNumbers = new Set(); // Set to store existing phone numbers
+        const existingPhoneNumbers = new Set();
 
-        // Fetch existing phone numbers from the customer database
         const customersRef = ref(database, "customers");
         const customersSnapshot = await get(customersRef);
         if (customersSnapshot.exists()) {
@@ -150,12 +142,12 @@ const OwnerDashboard = () => {
             totalSalesAmount += sale.total || 0;
             if (!existingPhoneNumbers.has(sale.phoneNumber)) {
               newCustomersCount += 1;
-              existingPhoneNumbers.add(sale.phoneNumber); // Add new customer phone number to the set
+              existingPhoneNumbers.add(sale.phoneNumber);
             }
             if (sale.items && Array.isArray(sale.items)) {
               sale.items.forEach((item) => {
-                totalProfitAmount += item.profit || 0; // Default to 0 if profit is undefined
-                totalLossAmount += item.loss || 0; // Default to 0 if loss is undefined
+                totalProfitAmount += item.profit || 0;
+                totalLossAmount += item.loss || 0;
               });
             }
           }
@@ -163,9 +155,9 @@ const OwnerDashboard = () => {
 
         setDailySalesCount(salesCount);
         setDailyNewCustomersCount(newCustomersCount);
-        setTotalSales(totalSalesAmount); // Set total sales amount in state
-        setTotalProfit(totalProfitAmount); // Set total profit in state
-        setTotalLoss(totalLossAmount); // Set total loss in state
+        setTotalSales(totalSalesAmount);
+        setTotalProfit(totalProfitAmount);
+        setTotalLoss(totalLossAmount);
         toast.success("Sales data loaded successfully!");
       }
     } catch (error) {
@@ -196,53 +188,40 @@ const OwnerDashboard = () => {
         handleLogout={handleLogout}
         toggleSidebar={toggleSidebar}
       />
-
-      <div className="dashboard-layout">
+      <div className="alhamd-dashboard-layout">
         <Sidebar
           activeComponent={activeComponent}
           handleSetActivePage={handleSetActivePage}
           sidebarActive={sidebarActive}
           handleLogout={handleLogout}
         />
-
-        <main className="main-content">
+        <main className="alhamd-main-content">
           {loading ? (
-            <div className="spinner"></div>
+            <div className="alhamd-loading-text">Loading...</div>
           ) : (
-            <div className="welcome-message">
+            <div className="alhamd-welcome-message">
               <h2>Welcome, {ownerName}! 🎉</h2>
               <p>Here’s a quick overview of your store.</p>
             </div>
           )}
-          <select
-            value={selectedTimePeriod}
-            onChange={(e) => setSelectedTimePeriod(e.target.value)}
-            className="time-period-select"
-          >
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-            <option value="all-time">All Time</option>
-          </select>
           {activeComponent === "dashboard" && (
             <Dashboard
-              totalSales={totalSales} // Pass total sales as a prop
-              totalProfit={totalProfit} // Pass total profit as a prop
-              totalLoss={totalLoss} // Pass total loss as a prop
-              dailySalesCount={dailySalesCount} // Pass daily sales count as a prop
-              dailyNewCustomersCount={dailyNewCustomersCount} // Pass daily new customers count as a prop
+              totalSales={totalSales}
+              totalProfit={totalProfit}
+              totalLoss={totalLoss}
+              dailySalesCount={dailySalesCount}
+              dailyNewCustomersCount={dailyNewCustomersCount}
+              selectedTimePeriod={selectedTimePeriod}
+              setSelectedTimePeriod={setSelectedTimePeriod} // Pass down the prop
             />
           )}
           {activeComponent === "orders" && <Orders />}
           {activeComponent === "inventory" && <Inventory />}
           {activeComponent === "users" && <Users />}
           {activeComponent === "settings" && <Settings />}
-          {activeComponent === "addsales" && <AddSales />}{" "}
-          {/* AddSales component */}
+          {activeComponent === "addsales" && <AddSales />}
         </main>
       </div>
-      <ToastContainer />
     </div>
   );
 };

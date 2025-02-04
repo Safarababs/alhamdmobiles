@@ -1,59 +1,169 @@
+/* ViewInventory.css */
+
 .view-inventory-section {
   padding: 20px;
+  max-width: 100%;
 }
 
-.search-bar {
-  margin-bottom: 20px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.filters {
+.view-inventory-search-bar,
+.view-inventory-filters {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 20px;
+  align-items: center; /* Center align the items */
 }
 
-.filters select {
-  width: 49%;
+.view-inventory-search-input,
+.view-inventory-brand-select {
+  width: 100%;
+  max-width: 700px; /* Set max-width for better layout */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
 }
 
-.inventory-table table {
+.view-inventory-category-select {
+  display: none;
+  width: 100%;
+  max-width: 700px; /* Set max-width for better layout */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+}
+
+.view-inventory-table {
+  overflow-x: auto;
+}
+
+.view-inventory-table-element {
   width: 100%;
   border-collapse: collapse;
 }
 
-.inventory-table th,
-.inventory-table td {
+.view-inventory-table-th,
+.view-inventory-table-td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  font-size: 14px; /* Adjusted for better readability */
 }
 
-.inventory-table th {
+.view-inventory-table-th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
 
-button {
-  background: #007bff;
+.view-inventory-button-update {
+  background: green;
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-right: 5px;
+  margin: 5px;
 }
 
-button:hover {
+.view-inventory-button-delete {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 5px;
+}
+
+.view-inventory-button:hover {
   background: #0056b3;
+}
+
+@media screen and (max-width: 1024px) {
+  .view-inventory-filters {
+    flex-direction: column;
+  }
+
+  .view-inventory-table-th,
+  .view-inventory-table-td {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .view-inventory-button {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    top: 5px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .view-inventory-section {
+    padding: 10px;
+    max-width: 500px;
+  }
+  .view-inventory-search-input,
+  .view-inventory-brand-select,
+  .view-inventory-category-select {
+    padding: 8px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .view-inventory-table-th,
+  .view-inventory-table-td {
+    padding: 5px;
+    font-size: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .view-inventory-button {
+    padding: 6px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .view-inventory-section {
+    padding: 10px;
+    max-width: 250px;
+  }
+
+  .view-inventory-search-bar,
+  .view-inventory-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .view-inventory-search-input,
+  .view-inventory-brand-select,
+  .view-inventory-category-select {
+    width: 100%;
+    max-width: 100%; /* Ensure full width on mobile */
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box; /* Ensure padding and border are included in the total width and height */
+  }
+
+  .view-inventory-table-th,
+  .view-inventory-table-td {
+    padding: 4px;
+    font-size: 12px; /* Adjusted for better readability */
+  }
+
+  .view-inventory-button {
+    padding: 5px;
+    font-size: 12px; /* Adjusted for better readability */
+    width: 100%;
+    margin-top: 5px;
+  }
 }

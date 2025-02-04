@@ -1,15 +1,13 @@
 /* Background Color for the Administration Page */
 .admin-page {
-  background: linear-gradient(
-    to right,
-    #6a5acd,
-    #4b0082
-  ); /* Beautiful gradient */
+  background: linear-gradient(to right, #6a5acd, #4b0082);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
+  background-color: var(--admin-bg-color);
+  color: var(--admin-text-color);
 }
 
 /* Admin Container */
@@ -19,7 +17,7 @@
   margin: 0 auto;
   padding: 20px;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--admin-container-bg);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -32,7 +30,7 @@
 /* Header Styling */
 .admin-header {
   font-size: 2.5rem;
-  color: #333;
+  color: var(--admin-header-color);
   margin-bottom: 30px;
   font-weight: 600;
   line-height: 1.3;
@@ -53,8 +51,12 @@
   font-weight: 600;
   border: none;
   border-radius: 50px;
-  background: linear-gradient(45deg, #6a5acd, #4b0082);
-  color: #fff;
+  background: linear-gradient(
+    45deg,
+    var(--admin-button-bg-start),
+    var(--admin-button-bg-end)
+  );
+  color: var(--admin-button-text-color);
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
@@ -62,7 +64,11 @@
 }
 
 .admin-buttons button:hover {
-  background: linear-gradient(45deg, #4b0082, #6a5acd);
+  background: linear-gradient(
+    45deg,
+    var(--admin-button-bg-end),
+    var(--admin-button-bg-start)
+  );
   transform: translateY(-5px);
 }
 
@@ -98,4 +104,25 @@
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+}
+
+/* Light and Dark Theme Variables */
+:root {
+  --admin-bg-color: #ffffff;
+  --admin-text-color: #000000;
+  --admin-container-bg: #ffffff;
+  --admin-header-color: #333;
+  --admin-button-bg-start: #6a5acd;
+  --admin-button-bg-end: #4b0082;
+  --admin-button-text-color: #ffffff;
+}
+
+body.dark-mode {
+  --admin-bg-color: #333333;
+  --admin-text-color: #ffffff;
+  --admin-container-bg: #444444;
+  --admin-header-color: #ffffff;
+  --admin-button-bg-start: #4b0082;
+  --admin-button-bg-end: #6a5acd;
+  --admin-button-text-color: #ffffff;
 }

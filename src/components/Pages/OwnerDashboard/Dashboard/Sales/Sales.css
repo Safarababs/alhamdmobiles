@@ -13,6 +13,26 @@
   margin-bottom: 20px;
 }
 
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sort-dropdown {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .unique-sales-table {
   width: 100%;
   border-collapse: collapse;
@@ -116,8 +136,7 @@
   }
 
   .serial-number {
-    display: block;
-    text-align: center;
+    text-align: right;
     background: #f0f4f8;
     padding: 3px;
     margin: 10px;
@@ -126,7 +145,6 @@
     color: #007bff;
     font-weight: bold;
     font-size: 0.9em;
-    margin-bottom: 10px;
   }
 
   .unique-sales-table tr::after {

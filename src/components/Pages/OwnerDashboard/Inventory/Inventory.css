@@ -1,5 +1,10 @@
+/* Inventory.css */
+
 .inventory-section {
   padding: 20px;
+  background-color: #f4f4f9; /* Additional style */
+  border-radius: 8px; /* Additional style */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Additional style */
 }
 
 .inventory-cards {
@@ -15,6 +20,12 @@
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  cursor: pointer; /* Additional style */
+  transition: transform 0.2s; /* Additional style */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Additional style */
 }
 
 .card h4 {
@@ -66,6 +77,19 @@
 .inventory-table th {
   background-color: #f2f2f2;
   font-weight: bold;
+}
+
+.dropdown-options {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dropdown-options select {
+  padding: 8px; /* Additional style */
+  border-radius: 4px; /* Additional style */
+  border: 1px solid #cccccc; /* Additional style */
+  cursor: pointer; /* Additional style */
+  max-width: 600px;
 }
 
 @media screen and (max-width: 768px) {

@@ -3,11 +3,11 @@ import { getDatabase, ref, update } from "firebase/database";
 import app from "../../../../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./UpdateItem.css";
 import {
   brandOptions,
   categoryOptions,
 } from "../../Common Options/commonOptions"; // Import common options
+import "./UpdateItem.css";
 
 const UpdateItem = ({ selectedItem }) => {
   const [itemName, setItemName] = useState("");
@@ -56,59 +56,69 @@ const UpdateItem = ({ selectedItem }) => {
   };
 
   return (
-    <div className="update-item-section">
-      <h3>Update Item</h3>
-      <div className="form-group">
-        <label>Item Name</label>
+    <div className="update-item-section-unique">
+      <h3 className="update-item-title-unique">Update Item</h3>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Item Name</label>
         <input
+          className="update-item-input-unique"
           type="text"
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Item Code</label>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Item Code</label>
         <input
+          className="update-item-input-unique"
           type="text"
           value={itemCode}
           onChange={(e) => setItemCode(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Purchase Price</label>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Purchase Price</label>
         <input
+          className="update-item-input-unique"
           type="number"
           value={purchasePrice}
           onChange={(e) => setPurchasePrice(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Wholesale Price</label>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Wholesale Price</label>
         <input
+          className="update-item-input-unique"
           type="number"
           value={wholesalePrice}
           onChange={(e) => setWholesalePrice(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Retail Price</label>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Retail Price</label>
         <input
+          className="update-item-input-unique"
           type="number"
           value={retailPrice}
           onChange={(e) => setRetailPrice(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Quantity</label>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Quantity</label>
         <input
+          className="update-item-input-unique"
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
       </div>
-      <div className="form-group">
-        <label>Category</label>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Category</label>
+        <select
+          className="update-item-select-unique"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
           <option value="">Select Category</option>
           {categoryOptions.map((cat) => (
             <option key={cat} value={cat}>
@@ -117,9 +127,13 @@ const UpdateItem = ({ selectedItem }) => {
           ))}
         </select>
       </div>
-      <div className="form-group">
-        <label>Brand</label>
-        <select value={brand} onChange={(e) => setBrand(e.target.value)}>
+      <div className="update-item-form-group-unique">
+        <label className="update-item-label-unique">Brand</label>
+        <select
+          className="update-item-select-unique"
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+        >
           <option value="">Select Brand</option>
           {brandOptions.map((br) => (
             <option key={br} value={br}>
@@ -128,7 +142,9 @@ const UpdateItem = ({ selectedItem }) => {
           ))}
         </select>
       </div>
-      <button onClick={handleUpdateItem}>Update Item</button>
+      <button className="update-item-button-unique" onClick={handleUpdateItem}>
+        Update Item
+      </button>
       <ToastContainer />
     </div>
   );

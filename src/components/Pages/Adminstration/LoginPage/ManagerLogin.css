@@ -1,15 +1,15 @@
-/* Login Page Container */
-.login-page {
+.manager-login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: linear-gradient(to right, #6a5acd, #4b0082);
   margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-/* Login Form */
-.login-form {
+.manager-login-form {
   width: 100%;
   max-width: 400px;
   background: white;
@@ -18,26 +18,24 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
-.login-header {
+.manager-login-header {
   font-size: 2rem;
   color: #333;
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Input Fields */
-.login-input {
+.manager-login-input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
 }
 
-/* Login Button */
-.login-button {
+.manager-login-button {
   width: 100%;
   padding: 12px;
   background-color: #6a5acd;
@@ -49,53 +47,26 @@
   transition: background-color 0.3s ease;
 }
 
-.login-button:hover {
+.manager-login-button:hover {
   background-color: #4b0082;
 }
 
-.login-button:focus {
+.manager-login-button:focus {
   outline: none;
-}
-
-/* Forgot Password Link */
-.forgot-password {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.forgot-password button {
-  background: none;
-  color: #6a5acd;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.forgot-password button:hover {
-  color: #4b0082;
-}
-
-/* Error Message */
-.error-message {
-  color: red;
-  font-size: 0.9rem;
-  text-align: center;
-  margin-top: 10px;
 }
 
 /* Responsive Design for Medium Screens (Tablets and Small Desktops) */
 @media (max-width: 768px) {
-  .login-header {
+  .manager-login-header {
     font-size: 1.8rem;
   }
 
-  .login-input {
+  .manager-login-input {
     font-size: 1rem;
     padding: 12px;
   }
 
-  .login-button {
+  .manager-login-button {
     font-size: 1rem;
     padding: 12px;
   }
@@ -103,23 +74,34 @@
 
 /* Responsive Design for Small Screens (Phones) */
 @media (max-width: 480px) {
-  .login-form {
+  .manager-login-form {
     width: 90%;
     padding: 15px;
   }
 
-  .login-header {
+  .manager-login-header {
     font-size: 1.5rem;
     margin-bottom: 15px;
   }
 
-  .login-input {
+  .manager-login-input {
     font-size: 0.9rem;
     padding: 10px;
   }
 
-  .login-button {
+  .manager-login-button {
     font-size: 1rem;
     padding: 10px;
   }
+}
+
+/* Light and Dark Theme Variables */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+body.dark-mode {
+  --bg-color: #333333;
+  --text-color: #ffffff;
 }

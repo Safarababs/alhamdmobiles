@@ -1,46 +1,67 @@
-.add-shopkeeper-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: #f9f9f9;
+.alhamd-add-shopkeeper-form {
+  background-color: var(--form-bg-color);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.add-shopkeeper-form h4 {
+.alhamd-form-title {
   margin-bottom: 10px;
-  color: #333;
+  color: var(--form-title-color);
 }
 
-.add-shopkeeper-form label {
+.alhamd-form-label {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #666;
+  color: var(--form-label-color);
+  margin-bottom: 10px;
 }
 
-.add-shopkeeper-form input {
+.alhamd-form-label input {
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--form-input-border-color);
   border-radius: 4px;
   margin-top: 5px;
 }
 
-.add-shopkeeper-form input.error {
-  border-color: red;
+.alhamd-input-error {
+  border-color: var(--form-input-error-border-color);
 }
 
-.add-shopkeeper-form button {
+.alhamd-add-button {
   padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.add-shopkeeper-form button:hover {
-  background-color: #0056b3;
+.alhamd-add-button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+/* Theme Variables */
+:root {
+  --form-bg-color: #fff;
+  --form-title-color: #333;
+  --form-label-color: #666;
+  --form-input-border-color: #ddd;
+  --form-input-error-border-color: red;
+  --button-bg-color: #007bff;
+  --button-text-color: #fff;
+  --button-hover-bg-color: #0056b3;
+}
+
+[data-theme="dark"] {
+  --form-bg-color: #333;
+  --form-title-color: #ecf0f1;
+  --form-label-color: #bbb;
+  --form-input-border-color: #555;
+  --form-input-error-border-color: red;
+  --button-bg-color: #007bff;
+  --button-text-color: #fff;
+  --button-hover-bg-color: #0056b3;
 }

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../../firebase";
-import { toast, ToastContainer } from "react-toastify"; // Import both 'toast' and 'ToastContainer'
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
-import "./LoginPage.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./OwnerLogin.css";
 
 const OwnerLogin = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +14,6 @@ const OwnerLogin = () => {
   const [toastShown, setToastShown] = useState(false);
   const navigate = useNavigate();
 
-  // 🔹 Redirect to dashboard if already logged in
   useEffect(() => {
     if (localStorage.getItem("ownerToken")) {
       navigate("/owner-dashboard");
@@ -24,7 +23,7 @@ const OwnerLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // ✅ Clear previous errors before new login attempt
+    setError("");
 
     const database = getDatabase(app);
     const ownersRef = ref(database, "owners");
@@ -48,13 +47,10 @@ const OwnerLogin = () => {
       if (ownerFound) {
         localStorage.setItem("ownerToken", "true");
         localStorage.setItem("ownerName", ownerFound.username);
-
-        // Trigger success toast
         toast.success("Login successful!", { autoClose: 2000 });
-
-        setToastShown(true); // Mark toast as shown
+        setToastShown(true);
       } else {
-        toast.error("Invalid username or password.", { autoClose: 2000 }); // ✅ Ensure toast fires
+        toast.error("Invalid username or password.", { autoClose: 2000 });
       }
     } catch (err) {
       console.error("Error fetching owner data:", err);
@@ -64,23 +60,22 @@ const OwnerLogin = () => {
     }
   };
 
-  // Redirect after toast is shown
   useEffect(() => {
     if (toastShown) {
       setTimeout(() => {
         navigate("/owner-dashboard");
-      }, 2000); // Ensure navigation after the toast stays visible
+      }, 2000);
     }
   }, [toastShown, navigate]);
 
   return (
-    <div className="login-page">
-      <div className="login-form">
-        <h2 className="login-header">Welcome, Owner</h2>
+    <div className="owner-login-page">
+      <div className="owner-login-form">
+        <h2 className="owner-login-header">Welcome, Owner</h2>
         <form onSubmit={handleLogin}>
-          <div className="input-container">
+          <div className="owner-input-container">
             <input
-              className="login-input"
+              className="owner-login-input"
               type="text"
               placeholder="Username"
               value={username}
@@ -88,9 +83,9 @@ const OwnerLogin = () => {
               required
             />
           </div>
-          <div className="input-container">
+          <div className="owner-input-container">
             <input
-              className="login-input"
+              className="owner-login-input"
               type="password"
               placeholder="Password"
               value={password}
@@ -98,14 +93,16 @@ const OwnerLogin = () => {
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          <button className="login-button" type="submit" disabled={loading}>
-            {loading ? <div className="spinner"></div> : "Login"}
+          {error && <p className="owner-error-message">{error}</p>}
+          <button
+            className="owner-login-button"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? <div className="owner-spinner"></div> : "Login"}
           </button>
         </form>
       </div>
-
-      {/* Add ToastContainer here */}
       <ToastContainer />
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LoginPage.css";
+import "./ManagerLogin.css";
 
 const ManagerLogin = () => {
   const navigate = useNavigate();
@@ -9,33 +9,32 @@ const ManagerLogin = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // Handle the login logic here
     if (username === "manager" && password === "manager") {
-      navigate("/manager-dashboard"); // Redirect to the manager dashboard after successful login
+      navigate("/manager-dashboard");
     } else {
       alert("Invalid credentials");
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-form">
-        <h2 className="login-header">Welcome Manager</h2>
+    <div className="manager-login-page">
+      <div className="manager-login-form">
+        <h2 className="manager-login-header">Welcome Manager</h2>
         <input
           type="text"
-          className="login-input"
+          className="manager-login-input"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          className="login-input"
+          className="manager-login-input"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="login-button" onClick={handleLogin}>
+        <button className="manager-login-button" onClick={handleLogin}>
           Login
         </button>
       </div>

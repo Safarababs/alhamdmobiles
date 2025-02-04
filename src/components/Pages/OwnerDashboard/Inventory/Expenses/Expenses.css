@@ -1,4 +1,4 @@
-/* DeleteItem.css */
+/* Expenses.css */
 
 /* Light Theme */
 :root {
@@ -22,7 +22,7 @@
   --button-hover-background-color: #1c7cd6;
 }
 
-.delete-item-section {
+.add-expense-section-unique {
   padding: 20px;
   width: 800px; /* Set a max width for better layout */
   margin: 0 auto; /* Center align the section */
@@ -32,23 +32,23 @@
   color: var(--text-color);
 }
 
-.delete-item-section h3 {
+.add-expense-title-unique {
   margin-bottom: 20px;
   text-align: center;
   color: var(--text-color);
 }
 
-.form-group {
+.form-group-unique {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.add-expense-label-unique {
   display: block;
   margin-bottom: 5px;
   color: var(--label-color);
 }
 
-.form-group input {
+.add-expense-input-unique {
   width: 100%;
   padding: 10px;
   background-color: var(--input-background-color);
@@ -58,7 +58,7 @@
   color: var(--text-color);
 }
 
-button {
+.add-expense-button-unique {
   width: 100%;
   padding: 10px;
   background-color: var(--button-background-color);
@@ -69,39 +69,39 @@ button {
   transition: background 0.3s ease;
 }
 
-button:hover {
+.add-expense-button-unique:hover {
   background-color: var(--button-hover-background-color);
 }
 
 @media screen and (max-width: 768px) {
-  .delete-item-section {
+  .add-expense-section-unique {
     padding: 15px;
     width: 600px; /* Ensure full width on smaller screens */
   }
 
-  .form-group input,
-  button {
+  .add-expense-input-unique,
+  .add-expense-button-unique {
     padding: 8px;
   }
 
-  .delete-item-section h3 {
+  .add-expense-title-unique {
     font-size: 18px;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .delete-item-section {
+  .add-expense-section-unique {
     padding: 10px;
     width: 280px; /* Ensure full width on mobile screens */
   }
 
-  .form-group input,
-  button {
+  .add-expense-input-unique,
+  .add-expense-button-unique {
     padding: 6px;
     font-size: 14px;
   }
 
-  .delete-item-section h3 {
+  .add-expense-title-unique {
     font-size: 16px;
   }
 }

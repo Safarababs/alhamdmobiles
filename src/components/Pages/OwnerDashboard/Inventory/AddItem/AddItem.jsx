@@ -3,10 +3,13 @@ import { getDatabase, ref, push } from "firebase/database";
 import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  brandOptions,
+  categoryOptions,
+} from "../../Common Options/commonOptions"; // Import the options
 import "./AddItem.css";
 
 const AddItem = () => {
-  const [theme, setTheme] = useState("light");
   const [itemName, setItemName] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
@@ -47,16 +50,9 @@ const AddItem = () => {
     }
   };
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
   return (
-    <div className={`add-item-section ${theme}`} data-theme={theme}>
+    <div className="add-item-section">
       <h3 className="add-item-title">Add Item</h3>
-      <button onClick={toggleTheme}>
-        Switch to {theme === "light" ? "Dark" : "Light"} Theme
-      </button>
       <div className="add-item-form-group">
         <label className="add-item-label">Item Name</label>
         <input
@@ -90,7 +86,12 @@ const AddItem = () => {
           className="add-item-input"
           type="number"
           value={wholesalePrice}
-          onChange={(e) => setWholesalePrice(e.target.value)}
+          onChange={(e) =>
+            setWholesalePrice(
+              (parseFloat(e.target.value) - parseFloat(purchasePrice)) / 2 +
+                parseFloat(purchasePrice)
+            )
+          }
         />
       </div>
       <div className="add-item-form-group">
@@ -119,10 +120,11 @@ const AddItem = () => {
           onChange={(e) => setBrand(e.target.value)}
         >
           <option value="">Select Brand</option>
-          <option value="Ronin">Ronin</option>
-          <option value="Faster">Faster</option>
-          <option value="Amb">Amb</option>
-          {/* Add other brands here */}
+          {brandOptions.map((brandOption) => (
+            <option key={brandOption} value={brandOption}>
+              {brandOption}
+            </option>
+          ))}
         </select>
       </div>
       <div className="add-item-form-group">
@@ -133,10 +135,11 @@ const AddItem = () => {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">Select Category</option>
-          <option value="Smart Watches">Smart Watches</option>
-          <option value="Wireless Chargers">Wireless Chargers</option>
-          <option value="Bluetooths">Bluetooths</option>
-          {/* Add other categories here */}
+          {categoryOptions.map((categoryOption) => (
+            <option key={categoryOption} value={categoryOption}>
+              {categoryOption}
+            </option>
+          ))}
         </select>
       </div>
       <button className="add-item-button" onClick={handleAddItem}>

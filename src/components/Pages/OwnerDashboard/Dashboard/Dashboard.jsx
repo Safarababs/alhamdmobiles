@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Chart as ChartJS,
@@ -17,6 +17,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import app from "../../../../firebase";
 import "./Dashboard.css";
 import Sales from "./Sales/sales";
+import { getStartDateForPeriod } from "./Sort Data/dateUtils";
 
 ChartJS.register(
   ArcElement,
@@ -30,20 +31,42 @@ ChartJS.register(
   Filler
 );
 
-const Dashboard = ({
-  totalSales,
-  totalProfit,
-  totalLoss,
-  dailySalesCount,
-  dailyNewCustomersCount,
-  selectedTimePeriod,
-  setSelectedTimePeriod,
-}) => {
+const normalizeSale = (sale) => {
+  return {
+    code: sale.code || "",
+    name: sale.name || "",
+    price: sale.price || sale.salePrice || 0,
+    purchasePrice: sale.purchasePrice || 0,
+    quantity: sale.quantity || 0,
+    total:
+      sale.total || (sale.quantity || 1) * (sale.price || sale.salePrice || 0),
+    phoneNumber: sale.phoneNumber || "",
+    totalProfit: sale.totalProfit || sale.profit || 0,
+    totalLoss: sale.totalLoss || sale.loss || 0,
+    date: sale.date || new Date().toISOString(),
+  };
+};
+
+const filterSalesData = (salesData, selectedTimePeriod) => {
+  const startDate = getStartDateForPeriod(selectedTimePeriod);
+  const now = new Date();
+
+  return salesData.filter((sale) => {
+    const saleDate = new Date(sale.date);
+    return saleDate >= startDate && saleDate <= now;
+  });
+};
+
+const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [salesData, setSalesData] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const database = getDatabase(app);
     const expensesRef = ref(database, "expenses");
+
+    setLoading(true); // Set loading to true before fetching data
 
     onValue(expensesRef, (snapshot) => {
       let expenses = 0;
@@ -53,10 +76,62 @@ const Dashboard = ({
       });
       setTotalExpenses(expenses);
     });
+
+    const salesRef = ref(database, "sales");
+    onValue(salesRef, (snapshot) => {
+      const salesArray = [];
+      snapshot.forEach((childSnapshot) => {
+        const sale = normalizeSale(childSnapshot.val());
+        salesArray.push(sale);
+      });
+      setSalesData(salesArray);
+      setLoading(false); // Set loading to false after data is fetched
+    });
   }, []);
 
+  const filteredSalesData = filterSalesData(salesData, selectedTimePeriod);
+
+  const calculateTotals = () => {
+    let totalSales = 0;
+    let totalProfit = 0;
+    let totalLoss = 0;
+    let dailySalesCount = 0;
+    let dailyNewCustomersCount = 0;
+    const today = new Date();
+
+    filteredSalesData.forEach((sale) => {
+      const saleDate = new Date(sale.date);
+      if (saleDate.toDateString() === today.toDateString()) {
+        dailySalesCount += sale.quantity;
+        if (sale.phoneNumber) dailyNewCustomersCount += 1; // Assuming each sale with a phone number is a new customer
+      }
+      totalSales += sale.total;
+      totalProfit += sale.totalProfit;
+      totalLoss += sale.totalLoss;
+    });
+
+    return {
+      totalSales,
+      totalProfit,
+      totalLoss,
+      dailySalesCount,
+      dailyNewCustomersCount,
+    };
+  };
+
+  const {
+    totalSales,
+    totalProfit,
+    totalLoss,
+    dailySalesCount,
+    dailyNewCustomersCount,
+  } = calculateTotals();
+
   // Calculate adjusted total sales
-  const adjustedTotalSales = totalSales - totalExpenses;
+  const adjustedTotalSales = totalSales;
+
+  // Calculate total available amount
+  const totalAvailable = adjustedTotalSales - totalExpenses;
 
   const pieChartData = {
     labels: ["Total Profit"],
@@ -138,23 +213,55 @@ const Dashboard = ({
       <div className="dashboard-cards">
         <div className="card">
           <h4>Total Sales</h4>
-          <p>₨ {adjustedTotalSales.toFixed(2)}</p>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {adjustedTotalSales.toFixed(2)}</p>
+          )}
         </div>
         <div className="card">
           <h4>Total Profit</h4>
-          <p>₨ {totalProfit.toFixed(2)}</p>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {totalProfit.toFixed(2)}</p>
+          )}
         </div>
         <div className="card">
           <h4>Total Loss</h4>
-          <p>₨ {totalLoss.toFixed(2)}</p>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {totalLoss.toFixed(2)}</p>
+          )}
         </div>
         <div className="card">
-          <h4>Orders</h4>
-          <p>{dailySalesCount}</p>
+          <h4>Total Expenses</h4>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {totalExpenses.toFixed(2)}</p>
+          )}
         </div>
         <div className="card">
-          <h4>New Customers</h4>
-          <p>{dailyNewCustomersCount}</p>
+          <h4>Total Available</h4>{" "}
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {totalAvailable.toFixed(2)}</p>
+          )}
+        </div>
+        <div className="card">
+          <h4>Orders</h4>{" "}
+          {loading ? <div className="spinner"></div> : <p>{dailySalesCount}</p>}
+        </div>
+        <div className="card">
+          <h4>New Customers</h4>{" "}
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>{dailyNewCustomersCount}</p>
+          )}
         </div>
       </div>
       <div className="charts-section">

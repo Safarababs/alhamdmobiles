@@ -3,6 +3,10 @@ import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  brandOptions,
+  categoryOptions,
+} from "../../Common Options/commonOptions"; // Import the options
 import "./ViewInventory.css";
 
 const ViewInventory = ({ onDelete, onUpdate }) => {
@@ -76,10 +80,11 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
           onChange={handleBrandChange}
         >
           <option value="">All Brands</option>
-          <option value="Ronin">Ronin</option>
-          <option value="Faster">Faster</option>
-          <option value="Amb">Amb</option>
-          {/* Add other brands here */}
+          {brandOptions.map((brandOption) => (
+            <option key={brandOption} value={brandOption}>
+              {brandOption}
+            </option>
+          ))}
         </select>
 
         <select
@@ -88,10 +93,11 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
           onChange={handleCategoryChange}
         >
           <option value="">All Categories</option>
-          <option value="Smart Watches">Smart Watches</option>
-          <option value="Wireless Chargers">Wireless Chargers</option>
-          <option value="Bluetooths">Bluetooths</option>
-          {/* Add other categories here */}
+          {categoryOptions.map((categoryOption) => (
+            <option key={categoryOption} value={categoryOption}>
+              {categoryOption}
+            </option>
+          ))}
         </select>
       </div>
 

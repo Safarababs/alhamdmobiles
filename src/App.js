@@ -6,6 +6,9 @@ import ManagerLogin from "./components/Pages/Adminstration/LoginPage/ManagerLogi
 import OwnerSignUp from "./components/Pages/Adminstration/administrationPage/OwnerSignup/OwnerSignUp";
 import OwnerDashboard from "./components/Pages/OwnerDashboard/OwnerDashboard";
 import OwnerAdminsPage from "./components/Pages/OwnerDashboard/OwnerAdminsPage";
+import FetchSalesData from "./Salesoldwebsitesales";
+
+import FetchAndSaveData from "./Inventory Old Website";
 
 const App = () => {
   return (
@@ -15,10 +18,11 @@ const App = () => {
         <Route path="/owner-login" element={<OwnerLogin />} />
         <Route path="/manager-login" element={<ManagerLogin />} />
         <Route path="/owner-signup" element={<OwnerSignUp />} />
+        <Route path="/old" element={<FetchSalesData />} />
+        <Route path="/old1" element={<FetchAndSaveData />} />
 
         {/* Main Dashboard Routes */}
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-
         {/* Admin Dashboard Route */}
         <Route path="/owner-admins" element={<OwnerAdminsPage />} />
       </Routes>

@@ -4,36 +4,25 @@ import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Sales.css";
+import { getStartDateForPeriod } from "../Sort Data/dateUtils";
 
 const Sales = ({ selectedTimePeriod }) => {
   const [salesData, setSalesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("dateNewest");
+  const [endDate] = useState(new Date());
+
+  const [totals, setTotals] = useState({
+    totalSales: 0,
+    totalProfit: 0,
+    totalLoss: 0,
+  });
 
   const fetchSalesData = useCallback(async () => {
     const database = getDatabase(app);
     const salesRef = ref(database, "sales");
-    const today = new Date();
-    const startDate = new Date();
 
-    // Adjust startDate based on the selected time period
-    switch (selectedTimePeriod) {
-      case "weekly":
-        startDate.setDate(today.getDate() - 7);
-        break;
-      case "monthly":
-        startDate.setMonth(today.getMonth() - 1);
-        break;
-      case "yearly":
-        startDate.setFullYear(today.getFullYear() - 1);
-        break;
-      case "all-time":
-        startDate.setFullYear(today.getFullYear() - 100);
-        break;
-      default:
-        startDate.setDate(today.getDate() - 1);
-        break;
-    }
+    const adjustedStartDate = getStartDateForPeriod(selectedTimePeriod);
 
     try {
       const snapshot = await get(salesRef);
@@ -41,23 +30,42 @@ const Sales = ({ selectedTimePeriod }) => {
         const salesArray = [];
         snapshot.forEach((childSnapshot) => {
           const sale = childSnapshot.val();
-          const saleDate = new Date(sale.date); // Parse the sale date
-          if (saleDate >= startDate && saleDate <= today) {
+          const saleDate = sale.date ? new Date(sale.date) : null;
+          if (
+            saleDate &&
+            saleDate >= adjustedStartDate &&
+            saleDate <= endDate
+          ) {
             salesArray.push(sale);
           }
         });
-
         setSalesData(salesArray);
+
+        // Calculate totals
+        const totalSales = salesArray.reduce(
+          (acc, sale) => acc + (sale.total || 0),
+          0
+        );
+        const totalProfit = salesArray.reduce(
+          (acc, sale) => acc + (sale.totalProfit || 0),
+          0
+        );
+        const totalLoss = salesArray.reduce(
+          (acc, sale) => acc + (sale.totalLoss || 0),
+          0
+        );
+        setTotals({ totalSales, totalProfit, totalLoss });
+
         toast.success("Sales data loaded successfully!");
       }
     } catch (error) {
       toast.error("Failed to load sales data!");
     }
-  }, [selectedTimePeriod]); // Add selectedTimePeriod as a dependency
+  }, [selectedTimePeriod, endDate]);
 
   useEffect(() => {
     fetchSalesData();
-  }, [fetchSalesData]); // Use fetchSalesData as a dependency
+  }, [fetchSalesData]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -85,11 +93,11 @@ const Sales = ({ selectedTimePeriod }) => {
   const filteredSalesData = salesData
     .filter((sale) => {
       return (
-        sale.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        sale.invoiceNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        sale.customerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        sale.phoneNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         sale.items.some((item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          item.name?.toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
     })
@@ -117,6 +125,7 @@ const Sales = ({ selectedTimePeriod }) => {
         onChange={handleSearchChange}
         className="search-bar"
       />
+
       <table className="unique-sales-table">
         <thead>
           <tr>
@@ -134,22 +143,41 @@ const Sales = ({ selectedTimePeriod }) => {
             <tr key={index}>
               <td className="serial-number">{index + 1}</td>
               <td data-label="Invoice Number">{sale.invoiceNumber}</td>
-              <td data-label="Customer Name">{sale.customerName}</td>
-              <td data-label="Phone Number">{sale.phoneNumber}</td>
-              <td data-label="Total">₨ {sale.total.toFixed(2)}</td>
-              <td data-label="Total Profit">₨ {sale.totalProfit.toFixed(2)}</td>
-              <td data-label="Total Loss">₨ {sale.totalLoss.toFixed(2)}</td>
+              <td data-label="Customer Name">{sale.customerName || "N/A"}</td>
+              <td data-label="Phone Number">{sale.phoneNumber || "N/A"}</td>
+              <td data-label="Total">₨ {(sale.total || 0).toFixed(2)}</td>
+              <td data-label="Total Profit">
+                ₨ {(sale.totalProfit || 0).toFixed(2)}
+              </td>
+              <td data-label="Total Loss">
+                ₨ {(sale.totalLoss || 0).toFixed(2)}
+              </td>
               <td data-label="Items">
                 <ul>
                   {sale.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
-                      {item.name} - {item.quantity} x ₨ {item.price.toFixed(2)}
+                      {item.name} - {item.quantity} x ₨{" "}
+                      {(item.price || 0).toFixed(2)}
                     </li>
                   ))}
                 </ul>
               </td>
             </tr>
           ))}
+          <tr>
+            <td colSpan="4">
+              <strong>Totals</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalSales.toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalProfit.toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalLoss.toFixed(2)}</strong>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

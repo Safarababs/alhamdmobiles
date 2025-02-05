@@ -10,7 +10,7 @@ const Invoice = ({
   onPriceChange,
   onDeleteItem,
 }) => {
-  const taxRate = 0.1; // 10% tax rate (adjust as needed)
+  const taxRate = 0; // 10% tax rate (adjust as needed)
   const taxAmount = invoiceTotal * taxRate;
   const totalWithTax = invoiceTotal + taxAmount;
 

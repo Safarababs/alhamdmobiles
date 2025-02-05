@@ -86,12 +86,7 @@ const AddItem = () => {
           className="add-item-input"
           type="number"
           value={wholesalePrice}
-          onChange={(e) =>
-            setWholesalePrice(
-              (parseFloat(e.target.value) - parseFloat(purchasePrice)) / 2 +
-                parseFloat(purchasePrice)
-            )
-          }
+          onChange={(e) => setWholesalePrice(e.target.value)}
         />
       </div>
       <div className="add-item-form-group">

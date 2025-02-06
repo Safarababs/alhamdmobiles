@@ -13,6 +13,7 @@ import Settings from "./Settings/Settings";
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
 import AddSales from "./Sales/AddSales";
+import Pending from "./Dashboard/Pending/Pending";
 
 const OwnerDashboard = () => {
   const navigate = useNavigate();
@@ -212,7 +213,7 @@ const OwnerDashboard = () => {
               dailySalesCount={dailySalesCount}
               dailyNewCustomersCount={dailyNewCustomersCount}
               selectedTimePeriod={selectedTimePeriod}
-              setSelectedTimePeriod={setSelectedTimePeriod} // Pass down the prop
+              setSelectedTimePeriod={setSelectedTimePeriod}
             />
           )}
           {activeComponent === "orders" && <Orders />}
@@ -220,6 +221,8 @@ const OwnerDashboard = () => {
           {activeComponent === "users" && <Users />}
           {activeComponent === "settings" && <Settings />}
           {activeComponent === "addsales" && <AddSales />}
+          {activeComponent === "pendingAmount" && <Pending />}{" "}
+          {/* Add your new component here */}
         </main>
       </div>
     </div>

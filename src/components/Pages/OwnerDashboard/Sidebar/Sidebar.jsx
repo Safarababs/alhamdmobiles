@@ -17,17 +17,25 @@ const Sidebar = ({
         >
           <span className="alhamd-icon">📊</span> Dashboard
         </li>
-        <li
-          className={activeComponent === "orders" ? "active" : ""}
-          onClick={() => handleSetActivePage("orders")}
-        >
-          <span className="alhamd-icon">🛒</span> Orders
-        </li>
+
         <li
           className={activeComponent === "inventory" ? "active" : ""}
           onClick={() => handleSetActivePage("inventory")}
         >
           <span className="alhamd-icon">📦</span> Inventory
+        </li>
+
+        <li
+          className={activeComponent === "addsales" ? "active" : ""}
+          onClick={() => handleSetActivePage("addsales")}
+        >
+          <span className="alhamd-icon">➕</span> Add Sales
+        </li>
+        <li
+          className={activeComponent === "pendingAmount" ? "active" : ""}
+          onClick={() => handleSetActivePage("pendingAmount")}
+        >
+          <span className="alhamd-icon">💰</span> Pending
         </li>
         <li
           className={activeComponent === "users" ? "active" : ""}
@@ -42,10 +50,10 @@ const Sidebar = ({
           <span className="alhamd-icon">⚙️</span> Settings
         </li>
         <li
-          className={activeComponent === "addsales" ? "active" : ""}
-          onClick={() => handleSetActivePage("addsales")}
+          className={activeComponent === "orders" ? "active" : ""}
+          onClick={() => handleSetActivePage("orders")}
         >
-          <span className="alhamd-icon">➕</span> Add Sales
+          <span className="alhamd-icon">🛒</span> Orders
         </li>
         <li className="alhamd-logout-button mobile-only" onClick={handleLogout}>
           <span className="alhamd-icon">➡️</span> Logout

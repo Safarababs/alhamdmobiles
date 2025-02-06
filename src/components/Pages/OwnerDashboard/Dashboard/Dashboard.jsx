@@ -59,14 +59,16 @@ const filterSalesData = (salesData, selectedTimePeriod) => {
 
 const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [totalPendingAmount, setTotalPendingAmount] = useState(0);
   const [salesData, setSalesData] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const database = getDatabase(app);
     const expensesRef = ref(database, "expenses");
+    const pendingRef = ref(database, "pendingAmounts");
 
-    setLoading(true); // Set loading to true before fetching data
+    setLoading(true);
 
     onValue(expensesRef, (snapshot) => {
       let expenses = 0;
@@ -77,6 +79,15 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
       setTotalExpenses(expenses);
     });
 
+    onValue(pendingRef, (snapshot) => {
+      let pendingAmount = 0;
+      snapshot.forEach((childSnapshot) => {
+        const pending = childSnapshot.val();
+        pendingAmount += pending.pendingAmount;
+      });
+      setTotalPendingAmount(pendingAmount);
+    });
+
     const salesRef = ref(database, "sales");
     onValue(salesRef, (snapshot) => {
       const salesArray = [];
@@ -85,7 +96,7 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
         salesArray.push(sale);
       });
       setSalesData(salesArray);
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false);
     });
   }, []);
 
@@ -103,7 +114,7 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
       const saleDate = new Date(sale.date);
       if (saleDate.toDateString() === today.toDateString()) {
         dailySalesCount += sale.quantity;
-        if (sale.phoneNumber) dailyNewCustomersCount += 1; // Assuming each sale with a phone number is a new customer
+        if (sale.phoneNumber) dailyNewCustomersCount += 1;
       }
       totalSales += sale.total;
       totalProfit += sale.totalProfit;
@@ -127,10 +138,7 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
     dailyNewCustomersCount,
   } = calculateTotals();
 
-  // Calculate adjusted total sales
   const adjustedTotalSales = totalSales;
-
-  // Calculate total available amount
   const totalAvailable = adjustedTotalSales - totalExpenses;
 
   const pieChartData = {
@@ -261,6 +269,14 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
             <div className="spinner"></div>
           ) : (
             <p>{dailyNewCustomersCount}</p>
+          )}
+        </div>
+        <div className="card">
+          <h4>Total Pending</h4>{" "}
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <p>₨ {totalPendingAmount.toFixed(2)}</p>
           )}
         </div>
       </div>

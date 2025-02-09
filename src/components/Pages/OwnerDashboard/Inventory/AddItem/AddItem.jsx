@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { getDatabase, ref, push } from "firebase/database";
+import React, { useState, useEffect } from "react";
+import { getDatabase, ref, get, push } from "firebase/database";
 import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +18,40 @@ const AddItem = () => {
   const [quantity, setQuantity] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    fetchInventoryDataAndSetItemCode();
+  }, []);
+
+  const fetchInventoryDataAndSetItemCode = async () => {
+    const database = getDatabase(app);
+    const inventoryRef = ref(database, "inventory");
+
+    try {
+      const snapshot = await get(inventoryRef);
+      if (snapshot.exists()) {
+        const inventoryArray = [];
+        snapshot.forEach((childSnapshot) => {
+          const item = childSnapshot.val();
+          item.key = childSnapshot.key; // Store the Firebase key
+          inventoryArray.push(item);
+        });
+
+        // Find the highest item code
+        const highestItemCode = Math.max(
+          ...inventoryArray.map((item) => parseInt(item.code, 10))
+        );
+
+        // Set the new item code to the highest item code +1
+        setItemCode((highestItemCode + 1).toString());
+
+        toast.success("Inventory data loaded successfully!");
+      }
+    } catch (error) {
+      console.error("Error fetching inventory data:", error);
+      toast.error("Failed to load inventory data!");
+    }
+  };
 
   const handleAddItem = async () => {
     const database = getDatabase(app);
@@ -38,7 +72,7 @@ const AddItem = () => {
       await push(inventoryRef, newItem);
       toast.success("Item added successfully!");
       setItemName("");
-      setItemCode("");
+      setItemCode((parseInt(itemCode) + 1).toString()); // Automatically increment the item code for the next item
       setPurchasePrice("");
       setWholesalePrice("");
       setRetailPrice("");
@@ -69,6 +103,7 @@ const AddItem = () => {
           type="text"
           value={itemCode}
           onChange={(e) => setItemCode(e.target.value)}
+          readOnly // Make the item code field read-only
         />
       </div>
       <div className="add-item-form-group">

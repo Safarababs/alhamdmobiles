@@ -14,6 +14,7 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [isAscending, setIsAscending] = useState(true); // State for sorting order
 
   useEffect(() => {
     fetchInventoryData();
@@ -53,13 +54,25 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
     setSelectedCategory(event.target.value);
   };
 
-  const filteredInventory = inventoryData.filter(
-    (item) =>
-      (item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.code.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (selectedBrand ? item.brand === selectedBrand : true) &&
-      (selectedCategory ? item.category === selectedCategory : true)
-  );
+  const handleSortOrderToggle = () => {
+    setIsAscending(!isAscending);
+  };
+
+  const sortedInventory = inventoryData
+    .filter(
+      (item) =>
+        (item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.code.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (selectedBrand ? item.brand === selectedBrand : true) &&
+        (selectedCategory ? item.category === selectedCategory : true)
+    )
+    .sort((a, b) => {
+      if (isAscending) {
+        return a.code.localeCompare(b.code);
+      } else {
+        return b.code.localeCompare(a.code);
+      }
+    });
 
   return (
     <div className="view-inventory-section">
@@ -101,6 +114,10 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
         </select>
       </div>
 
+      <button onClick={handleSortOrderToggle}>
+        Sort by Code: {isAscending ? "Ascending" : "Descending"}
+      </button>
+
       <div className="view-inventory-table">
         <table className="view-inventory-table-element">
           <thead className="view-inventory-table-head">
@@ -117,7 +134,7 @@ const ViewInventory = ({ onDelete, onUpdate }) => {
             </tr>
           </thead>
           <tbody className="view-inventory-table-body">
-            {filteredInventory.map((item, index) => (
+            {sortedInventory.map((item, index) => (
               <tr className="view-inventory-table-row" key={index}>
                 <td className="view-inventory-table-td">{item.code}</td>
                 <td className="view-inventory-table-td">{item.name}</td>

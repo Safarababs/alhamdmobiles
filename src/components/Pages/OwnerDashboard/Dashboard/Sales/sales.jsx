@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { getDatabase, ref, get, update } from "firebase/database";
+import React, { useEffect, useState, useCallback } from "react";
+import { getDatabase, ref, get } from "firebase/database";
 import app from "../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,6 @@ const Sales = ({ selectedTimePeriod }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("dateNewest");
   const [endDate] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(true);
 
   const [totals, setTotals] = useState({
     totalSales: 0,
@@ -20,7 +19,6 @@ const Sales = ({ selectedTimePeriod }) => {
   });
 
   const fetchSalesData = useCallback(async () => {
-    setIsLoading(true);
     const database = getDatabase(app);
     const salesRef = ref(database, "sales");
 
@@ -43,6 +41,7 @@ const Sales = ({ selectedTimePeriod }) => {
         });
         setSalesData(salesArray);
 
+        // Calculate totals
         const totalSales = salesArray.reduce(
           (acc, sale) => acc + (sale.total || 0),
           0
@@ -61,8 +60,6 @@ const Sales = ({ selectedTimePeriod }) => {
       }
     } catch (error) {
       toast.error("Failed to load sales data!");
-    } finally {
-      setIsLoading(false);
     }
   }, [selectedTimePeriod, endDate]);
 
@@ -78,26 +75,23 @@ const Sales = ({ selectedTimePeriod }) => {
     setSortOption(e.target.value);
   };
 
-  const getSortedData = useCallback(
-    (data) => {
-      switch (sortOption) {
-        case "dateNewest":
-          return data.sort((a, b) => new Date(b.date) - new Date(a.date));
-        case "dateOldest":
-          return data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        case "profitHighest":
-          return data.sort((a, b) => b.totalProfit - a.totalProfit);
-        case "profitLowest":
-          return data.sort((a, b) => a.totalProfit - b.totalProfit);
-        default:
-          return data;
-      }
-    },
-    [sortOption]
-  );
+  const getSortedData = (data) => {
+    switch (sortOption) {
+      case "dateNewest":
+        return data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      case "dateOldest":
+        return data.sort((a, b) => new Date(a.date) - new Date(b.date));
+      case "profitHighest":
+        return data.sort((a, b) => b.totalProfit - a.totalProfit);
+      case "profitLowest":
+        return data.sort((a, b) => a.totalProfit - b.totalProfit);
+      default:
+        return data;
+    }
+  };
 
-  const filteredSalesData = useMemo(() => {
-    return salesData.filter((sale) => {
+  const filteredSalesData = salesData
+    .filter((sale) => {
       return (
         sale.invoiceNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         sale.customerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -106,72 +100,13 @@ const Sales = ({ selectedTimePeriod }) => {
           item.name?.toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
-    });
-  }, [salesData, searchQuery]);
-
-  const sortedAndFilteredSalesData = useMemo(() => {
-    return getSortedData(filteredSalesData);
-  }, [filteredSalesData, getSortedData]);
-
-  const updateItemQuantity = async (itemCode, quantitySold) => {
-    const database = getDatabase(app);
-    const itemRef = ref(database, `items/${itemCode}`);
-
-    try {
-      const snapshot = await get(itemRef);
-      if (snapshot.exists()) {
-        const currentItem = snapshot.val();
-        const newQuantity = currentItem.quantity - quantitySold;
-        await update(itemRef, { quantity: newQuantity });
-        console.log(`Quantity updated successfully for item ${itemCode}`);
-      } else {
-        console.error(`Item with code ${itemCode} not found`);
-      }
-    } catch (error) {
-      console.error("Failed to update item quantity", error);
-    }
-  };
-
-  const addSale = async () => {
-    const sale = {
-      invoiceNumber: "INV123456",
-      customerName: "John Doe",
-      phoneNumber: "+1234567890",
-      date: new Date().toISOString(),
-      total: 1000,
-      totalProfit: 200,
-      totalLoss: 0,
-      items: [
-        {
-          code: "ITEM001",
-          name: "Sample Item",
-          quantity: 2,
-          price: 500,
-          purchasePrice: 400,
-        },
-      ],
-    };
-
-    const database = getDatabase(app);
-    const salesRef = ref(database, "sales");
-
-    try {
-      await update(salesRef, { [sale.invoiceNumber]: sale });
-      sale.items.forEach(async (item) => {
-        await updateItemQuantity(item.code, item.quantity);
-      });
-      toast.success("Sale added successfully!");
-      fetchSalesData(); // Refresh sales data after adding a new sale
-    } catch (error) {
-      toast.error("Failed to add sale!");
-    }
-  };
+    })
+    .map((sale) => ({ ...sale }));
+  const sortedAndFilteredSalesData = getSortedData(filteredSalesData);
 
   return (
     <div className="unique-sales-section">
       <h2>Sales</h2>
-
-      <button onClick={addSale}>Add Sale</button>
 
       <select
         value={sortOption}
@@ -191,64 +126,60 @@ const Sales = ({ selectedTimePeriod }) => {
         className="search-bar"
       />
 
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <table className="unique-sales-table">
-          <thead>
-            <tr>
-              <th>Invoice Number</th>
-              <th>Customer Name</th>
-              <th>Phone Number</th>
-              <th>Total</th>
-              <th>Total Profit</th>
-              <th>Total Loss</th>
-              <th>Items</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedAndFilteredSalesData.map((sale, index) => (
-              <tr key={index}>
-                <td className="serial-number">{index + 1}</td>
-                <td data-label="Invoice Number">{sale.invoiceNumber}</td>
-                <td data-label="Customer Name">{sale.customerName || "N/A"}</td>
-                <td data-label="Phone Number">{sale.phoneNumber || "N/A"}</td>
-                <td data-label="Total">₨ {(sale.total || 0).toFixed(2)}</td>
-                <td data-label="Total Profit">
-                  ₨ {(sale.totalProfit || 0).toFixed(2)}
-                </td>
-                <td data-label="Total Loss">
-                  ₨ {(sale.totalLoss || 0).toFixed(2)}
-                </td>
-                <td data-label="Items">
-                  <ul>
-                    {sale.items.map((item, itemIndex) => (
-                      <li key={itemIndex}>
-                        {item.name} - {item.quantity} x ₨{" "}
-                        {(item.price || 0).toFixed(2)}
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            ))}
-            <tr>
-              <td colSpan="4">
-                <strong>Totals</strong>
+      <table className="unique-sales-table">
+        <thead>
+          <tr>
+            <th>Invoice Number</th>
+            <th>Customer Name</th>
+            <th>Phone Number</th>
+            <th>Total</th>
+            <th>Total Profit</th>
+            <th>Total Loss</th>
+            <th>Items</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedAndFilteredSalesData.map((sale, index) => (
+            <tr key={index}>
+              <td className="serial-number">{index + 1}</td>
+              <td data-label="Invoice Number">{sale.invoiceNumber}</td>
+              <td data-label="Customer Name">{sale.customerName || "N/A"}</td>
+              <td data-label="Phone Number">{sale.phoneNumber || "N/A"}</td>
+              <td data-label="Total">₨ {(sale.total || 0).toFixed(2)}</td>
+              <td data-label="Total Profit">
+                ₨ {(sale.totalProfit || 0).toFixed(2)}
               </td>
-              <td>
-                <strong>₨ {totals.totalSales.toFixed(2)}</strong>
+              <td data-label="Total Loss">
+                ₨ {(sale.totalLoss || 0).toFixed(2)}
               </td>
-              <td>
-                <strong>₨ {totals.totalProfit.toFixed(2)}</strong>
-              </td>
-              <td>
-                <strong>₨ {totals.totalLoss.toFixed(2)}</strong>
+              <td data-label="Items">
+                <ul>
+                  {sale.items.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      {item.name} - {item.quantity} x ₨{" "}
+                      {(item.price || 0).toFixed(2)}
+                    </li>
+                  ))}
+                </ul>
               </td>
             </tr>
-          </tbody>
-        </table>
-      )}
+          ))}
+          <tr>
+            <td colSpan="4">
+              <strong>Totals</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalSales.toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalProfit.toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong>₨ {totals.totalLoss.toFixed(2)}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

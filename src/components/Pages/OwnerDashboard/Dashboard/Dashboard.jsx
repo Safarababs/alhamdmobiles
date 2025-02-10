@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import Card from "./Card/Card"; // Import the Card component
-import Chart, {
-  pieChartData,
-  barChartData,
-  lineChartData,
-  chartOptions,
-} from "./Chart/Chart"; // Import the Chart component and configurations
+import Chart from "./Chart/Chart"; // Import the Chart component
 import Sales from "./Sales/sales";
+import ProfitChart from "./ProfitChart/ProfitChart";
+import PieChart from "./PieChart/PieChart";
 
-const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
+const Dashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
 
   return (
@@ -63,7 +60,6 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
           type="totalMonthlyLoss"
           selectedTimePeriod={selectedPeriod}
         />
-
         <Card
           title="Total Pending"
           type="totalPendingAmount"
@@ -71,24 +67,9 @@ const Dashboard = ({ selectedTimePeriod, setSelectedTimePeriod }) => {
         />
       </div>
       <div className="charts-section">
-        <Chart
-          type="Pie"
-          data={pieChartData}
-          options={chartOptions}
-          title="Profit Distribution (Pie Chart)"
-        />
-        <Chart
-          type="Bar"
-          data={barChartData}
-          options={chartOptions}
-          title="Sales Distribution (Bar Chart)"
-        />
-        <Chart
-          type="Line"
-          data={lineChartData}
-          options={chartOptions}
-          title="Loss Distribution (Line Chart)"
-        />
+        <Chart selectedTimePeriod={selectedPeriod} />
+        <ProfitChart selectedTimePeriod={selectedPeriod} />
+        <PieChart selectedTimePeriod={selectedPeriod} />
       </div>
       <Sales selectedTimePeriod={selectedPeriod} />
     </div>

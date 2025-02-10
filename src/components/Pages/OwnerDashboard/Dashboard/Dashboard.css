@@ -1,3 +1,4 @@
+/* Dashboard Cards */
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -5,6 +6,7 @@
   margin-top: 20px;
 }
 
+/* Time Period Selector */
 .dashboard-time-period {
   text-align: center;
   margin-bottom: 20px;
@@ -21,6 +23,7 @@
   margin: 1rem;
 }
 
+/* Card Styles */
 .card {
   background: white;
   border-radius: 8px;
@@ -40,6 +43,7 @@
   color: #007bff;
 }
 
+/* Charts Section */
 .charts-section {
   display: flex;
   flex-wrap: wrap;
@@ -47,6 +51,7 @@
   margin-top: 40px;
 }
 
+/* Chart Container */
 .chart-container {
   background: #f4f7fc;
   padding: 20px;
@@ -87,6 +92,7 @@
   max-height: 250px;
 }
 
+/* Responsive Styles */
 @media screen and (max-width: 1024px) {
   .charts-section {
     flex-direction: column;
@@ -140,6 +146,7 @@
   }
 }
 
+/* Welcome Message */
 .welcome-message {
   background: #ffffff;
   padding: 20px;
@@ -149,6 +156,7 @@
   color: #333;
 }
 
+/* Loading Text */
 .loading-text {
   text-align: center;
   font-size: 18px;

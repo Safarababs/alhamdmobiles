@@ -6,16 +6,16 @@ import "chart.js/auto";
 
 const db = getDatabase(app);
 
-const Chart = ({ selectedTimePeriod }) => {
-  const [salesData, setSalesData] = useState({ labels: [], datasets: [] });
+const ProfitChart = ({ selectedTimePeriod }) => {
+  const [profitData, setProfitData] = useState({ labels: [], datasets: [] });
 
   useEffect(() => {
-    const fetchSalesData = () => {
+    const fetchProfitData = () => {
       const salesRef = ref(db, "sales");
       onValue(salesRef, (snapshot) => {
         const data = snapshot.val();
         const labels = [];
-        const sales = [];
+        const profits = [];
         const now = new Date();
 
         Object.keys(data).forEach((key) => {
@@ -24,16 +24,16 @@ const Chart = ({ selectedTimePeriod }) => {
 
           if (isValid) {
             labels.push(saleDate.toLocaleDateString()); // Convert date to readable format
-            sales.push(data[key].total); // Use 'total' for sales data
+            profits.push(data[key].totalProfit); // Use 'totalProfit' for profit data
           }
         });
 
-        setSalesData({
+        setProfitData({
           labels: labels,
           datasets: [
             {
-              label: "Sales",
-              data: sales,
+              label: "Profit",
+              data: profits,
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 2,
             },
@@ -42,7 +42,7 @@ const Chart = ({ selectedTimePeriod }) => {
       });
     };
 
-    fetchSalesData();
+    fetchProfitData();
   }, [selectedTimePeriod]);
 
   const validateDate = (saleDate, period, now) => {
@@ -87,10 +87,10 @@ const Chart = ({ selectedTimePeriod }) => {
 
   return (
     <div className="chart-container">
-      <h2>Sales Data ({selectedTimePeriod})</h2>
-      <Line data={salesData} />
+      <h3>Profit Data ({selectedTimePeriod})</h3>
+      <Line data={profitData} />
     </div>
   );
 };
 
-export default Chart;
+export default ProfitChart;

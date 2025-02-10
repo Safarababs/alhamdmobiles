@@ -1,8 +1,15 @@
 export const brandOptions = [
   "Default",
+  "Realme",
+  "OnePlus",
+  "Huawei",
+  "Redmi",
+  "Techno",
+  "Samsung",
   "Iphone",
   "Vivo",
   "oppo",
+  "poco",
   "infinix",
   "Ronin",
   "Faster",
@@ -10,6 +17,7 @@ export const brandOptions = [
 ]; // Add other brands here
 export const categoryOptions = [
   "General",
+  "Cover",
   "Mobile",
   "Smart Watches",
   "Wireless Chargers",

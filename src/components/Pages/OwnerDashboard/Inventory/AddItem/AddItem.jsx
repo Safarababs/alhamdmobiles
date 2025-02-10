@@ -88,15 +88,6 @@ const AddItem = () => {
     <div className="add-item-section">
       <h3 className="add-item-title">Add Item</h3>
       <div className="add-item-form-group">
-        <label className="add-item-label">Item Name</label>
-        <input
-          className="add-item-input"
-          type="text"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-        />
-      </div>
-      <div className="add-item-form-group">
         <label className="add-item-label">Item Code</label>
         <input
           className="add-item-input"
@@ -106,6 +97,16 @@ const AddItem = () => {
           readOnly // Make the item code field read-only
         />
       </div>
+      <div className="add-item-form-group">
+        <label className="add-item-label">Item Name</label>
+        <input
+          className="add-item-input"
+          type="text"
+          value={itemName}
+          onChange={(e) => setItemName(e.target.value)}
+        />
+      </div>
+
       <div className="add-item-form-group">
         <label className="add-item-label">Purchase Price</label>
         <input

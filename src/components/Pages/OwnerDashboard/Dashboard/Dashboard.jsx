@@ -5,6 +5,8 @@ import Chart from "./Chart/Chart"; // Import the Chart component
 import Sales from "./Sales/sales";
 import ProfitChart from "./ProfitChart/ProfitChart";
 import PieChart from "./PieChart/PieChart";
+import ViewInventory from "../Inventory/ViewInventory/ViewInventory";
+import ShowExpenses from "../Inventory/Expenses/Show Expensis/Show Expenses";
 
 const Dashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
@@ -72,6 +74,8 @@ const Dashboard = () => {
         <PieChart selectedTimePeriod={selectedPeriod} />
       </div>
       <Sales selectedTimePeriod={selectedPeriod} />
+      <ShowExpenses />
+      <ViewInventory />
     </div>
   );
 };

@@ -16,7 +16,7 @@ const Administration = () => {
   return (
     <div className="admin-page">
       <div className="admin-container">
-        <h1 className="admin-header">Welcome to the Alhamd Dashboard</h1>
+        <h1 className="admin-header">Welcome to the Abdullah Mobiles</h1>
         <div className="admin-buttons">
           <button onClick={handleOwnerLogin}>Login as Owner</button>
           <button onClick={handleManagerLogin}>Login as Manager</button>

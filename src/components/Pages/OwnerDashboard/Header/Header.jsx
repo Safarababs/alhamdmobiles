@@ -5,7 +5,7 @@ import "./Header.css"; // Import the CSS file
 const Header = ({ theme, toggleTheme, toggleSidebar }) => {
   return (
     <header className="alhamd-dashboard-header">
-      <h2>Alhamd Mobiles Admin Panel</h2>
+      <h2>Abdullah Mobiles Admin Panel</h2>
       <div className="alhamd-header-actions">
         <button className="alhamd-sidebar-toggle" onClick={toggleSidebar}>
           <FaBars />

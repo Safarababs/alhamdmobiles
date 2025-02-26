@@ -177,6 +177,7 @@ const Sales = ({ selectedTimePeriod }) => {
             <td>
               <strong>₨ {totals.totalLoss.toFixed(2)}</strong>
             </td>
+            <td></td>
           </tr>
         </tbody>
       </table>

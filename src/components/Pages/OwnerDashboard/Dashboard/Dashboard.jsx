@@ -53,7 +53,7 @@ const Dashboard = () => {
           selectedTimePeriod={selectedPeriod}
         />
         <Card
-          title="Total Monthly Profit"
+          title="Monthly Profit"
           type="totalMonthlyProfit"
           selectedTimePeriod={selectedPeriod}
         />
@@ -75,7 +75,6 @@ const Dashboard = () => {
       </div>
       <Sales selectedTimePeriod={selectedPeriod} />
       <ShowExpenses />
-      <ViewInventory />
     </div>
   );
 };

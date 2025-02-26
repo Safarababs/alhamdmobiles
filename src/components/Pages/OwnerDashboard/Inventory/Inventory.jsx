@@ -4,7 +4,7 @@ import AddItem from "./AddItem/AddItem";
 import DeleteItem from "./DeleteItem/DeleteItem";
 import UpdateItem from "./UpdateItem/UpdateItem";
 import ViewInventory from "./ViewInventory/ViewInventory";
-import Expenses from "./Expenses/Expenses"; // Import the Expenses component
+import Expenses from "./Expenses/Expenses";
 
 const Inventory = () => {
   const [activeComponent, setActiveComponent] = useState("view");

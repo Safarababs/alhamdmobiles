@@ -1,60 +1,83 @@
-.view-expenses-section {
+.unique-view-expenses-section {
   padding: 20px;
-  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Center the table horizontally */
+  align-items: center; /* Center the table vertically, if desired */
   overflow-x: auto;
+  flex-direction: column;
 }
 
-.view-expenses-table {
+.unique-view-expenses-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
+.unique-dashboard-time-period {
+  width: 30%;
+  display: flex;
+  justify-content: center; /* Center the dropdown within the container */
+  margin: 10px;
+  border-radius: 10px;
+}
 
-.view-expenses-table-element {
+@media screen and (min-width: 1024px) {
+  .unique-view-expenses-table {
+    width: 90%;
+  }
+}
+
+.unique-dashboard-time-period-select {
+  width: 100%;
+  height: 2rem;
+}
+
+.unique-view-expenses-table-element {
   width: 100%;
   border-collapse: collapse;
 }
 
-.view-expenses-table-th,
-.view-expenses-table-td {
+.unique-view-expenses-table-th,
+.unique-view-expenses-table-td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-.view-expenses-table-th {
-  background-color: #f2f2f2;
+.unique-view-expenses-table-th {
+  background-color: #0056b3;
+  color: white;
   font-weight: bold;
 }
 
-.view-expenses-table-row:nth-child(even) {
+.unique-view-expenses-table-row:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.view-expenses-table-row:hover {
+.unique-view-expenses-table-row:hover {
   background-color: #e2e2e2;
 }
 
 @media screen and (max-width: 600px) {
-  .view-expenses-table-th,
-  .view-expenses-table-td {
+  .unique-view-expenses-table-th,
+  .unique-view-expenses-table-td {
     font-size: 14px;
     padding: 6px;
   }
 
-  .view-expenses-section {
+  .unique-view-expenses-section {
     padding: 10px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .view-expenses-table-th,
-  .view-expenses-table-td {
+  .unique-view-expenses-table-th,
+  .unique-view-expenses-table-td {
     font-size: 12px;
     padding: 4px;
   }
 
-  .view-expenses-section {
+  .unique-view-expenses-section {
     padding: 5px;
   }
 }

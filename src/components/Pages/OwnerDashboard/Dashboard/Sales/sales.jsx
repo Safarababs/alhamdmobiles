@@ -11,6 +11,7 @@ const Sales = ({ selectedTimePeriod }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("dateNewest");
   const [endDate] = useState(new Date());
+  const [selectedPeriod, setSelectedPeriod] = useState("daily");
 
   const [totals, setTotals] = useState({
     totalSales: 0,
@@ -22,7 +23,7 @@ const Sales = ({ selectedTimePeriod }) => {
     const database = getDatabase(app);
     const salesRef = ref(database, "sales");
 
-    const adjustedStartDate = getStartDateForPeriod(selectedTimePeriod);
+    const adjustedStartDate = getStartDateForPeriod(selectedPeriod);
 
     try {
       const snapshot = await get(salesRef);
@@ -61,7 +62,7 @@ const Sales = ({ selectedTimePeriod }) => {
     } catch (error) {
       toast.error("Failed to load sales data!");
     }
-  }, [selectedTimePeriod, endDate]);
+  }, [selectedPeriod, endDate]);
 
   useEffect(() => {
     fetchSalesData();
@@ -107,6 +108,19 @@ const Sales = ({ selectedTimePeriod }) => {
   return (
     <div className="unique-sales-section">
       <h2>Sales</h2>
+      <div className="dashboard-time-period">
+        <select
+          value={selectedPeriod}
+          onChange={(e) => setSelectedPeriod(e.target.value)}
+          className="sort-dropdown"
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="all-time">All Time</option>
+        </select>
+      </div>
 
       <select
         value={sortOption}

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
-import Card from "./Card/Card"; // Import the Card component
-import Chart from "./Chart/Chart"; // Import the Chart component
-import Sales from "./Sales/sales";
+import Card from "./Card/Card";
+import Chart from "./Chart/Chart";
 import ProfitChart from "./ProfitChart/ProfitChart";
 import PieChart from "./PieChart/PieChart";
-import ViewInventory from "../Inventory/ViewInventory/ViewInventory";
+
 import ShowExpenses from "../Inventory/Expenses/Show Expensis/Show Expenses";
 
 const Dashboard = () => {
@@ -73,7 +72,6 @@ const Dashboard = () => {
         <ProfitChart selectedTimePeriod={selectedPeriod} />
         <PieChart selectedTimePeriod={selectedPeriod} />
       </div>
-      <Sales selectedTimePeriod={selectedPeriod} />
       <ShowExpenses />
     </div>
   );

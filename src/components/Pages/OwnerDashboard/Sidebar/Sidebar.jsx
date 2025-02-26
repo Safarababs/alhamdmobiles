@@ -32,22 +32,23 @@ const Sidebar = ({
           <span className="alhamd-icon">➕</span> Add Sales
         </li>
         <li
+          className={activeComponent === "users" ? "active" : ""}
+          onClick={() => handleSetActivePage("sales")}
+        >
+          <span className="alhamd-icon">💵</span> Sales
+        </li>
+        <li
           className={activeComponent === "pendingAmount" ? "active" : ""}
           onClick={() => handleSetActivePage("pendingAmount")}
         >
           <span className="alhamd-icon">💰</span> Pending
         </li>
-        <li
-          className={activeComponent === "users" ? "active" : ""}
-          onClick={() => handleSetActivePage("users")}
-        >
-          <span className="alhamd-icon">👥</span> Users
-        </li>
+
         <li
           className={activeComponent === "settings" ? "active" : ""}
-          onClick={() => handleSetActivePage("settings")}
+          onClick={() => handleSetActivePage("expenses")}
         >
-          <span className="alhamd-icon">⚙️</span> Settings
+          <span className="alhamd-icon">💸</span> Expenses
         </li>
         <li
           className={activeComponent === "orders" ? "active" : ""}

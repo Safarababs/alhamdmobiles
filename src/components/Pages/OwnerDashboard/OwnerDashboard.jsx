@@ -8,12 +8,14 @@ import "./OwnerDashboard.css";
 import Dashboard from "./Dashboard/Dashboard";
 import Orders from "./Orders/Orders";
 import Inventory from "./Inventory/Inventory";
-import Users from "./Users/Users";
-import Settings from "./Settings/Settings";
+
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
 import AddSales from "./Sales/AddSales";
 import Pending from "./Dashboard/Pending/Pending";
+import Sales from "./Dashboard/Sales/sales";
+
+import ShowExpenses from "./Inventory/Expenses/Show Expensis/Show Expenses";
 
 const OwnerDashboard = () => {
   const navigate = useNavigate();
@@ -218,11 +220,10 @@ const OwnerDashboard = () => {
           )}
           {activeComponent === "orders" && <Orders />}
           {activeComponent === "inventory" && <Inventory />}
-          {activeComponent === "users" && <Users />}
-          {activeComponent === "settings" && <Settings />}
+          {activeComponent === "expenses" && <ShowExpenses />}
           {activeComponent === "addsales" && <AddSales />}
-          {activeComponent === "pendingAmount" && <Pending />}{" "}
-          {/* Add your new component here */}
+          {activeComponent === "pendingAmount" && <Pending />}
+          {activeComponent === "sales" && <Sales />}
         </main>
       </div>
     </div>

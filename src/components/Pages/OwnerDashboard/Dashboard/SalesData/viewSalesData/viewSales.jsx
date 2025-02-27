@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getDatabase, ref, get } from "firebase/database";
-import app from "../../../../../firebase";
+import app from "../../../../../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Sales.css";
-import { getStartDateForPeriod } from "../Sort Data/dateUtils";
+import "./viewSales.css";
+import { getStartDateForPeriod } from "../../Sort Data/dateUtils";
 
-const Sales = ({ selectedTimePeriod }) => {
+const ViewSales = () => {
   const [salesData, setSalesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("dateNewest");
-  const [endDate] = useState(new Date());
   const [selectedPeriod, setSelectedPeriod] = useState("daily");
-
   const [totals, setTotals] = useState({
     totalSales: 0,
     totalProfit: 0,
@@ -22,8 +20,8 @@ const Sales = ({ selectedTimePeriod }) => {
   const fetchSalesData = useCallback(async () => {
     const database = getDatabase(app);
     const salesRef = ref(database, "sales");
-
     const adjustedStartDate = getStartDateForPeriod(selectedPeriod);
+    const endDate = new Date();
 
     try {
       const snapshot = await get(salesRef);
@@ -62,19 +60,14 @@ const Sales = ({ selectedTimePeriod }) => {
     } catch (error) {
       toast.error("Failed to load sales data!");
     }
-  }, [selectedPeriod, endDate]);
+  }, [selectedPeriod]);
 
   useEffect(() => {
     fetchSalesData();
   }, [fetchSalesData]);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-  };
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleSortChange = (e) => setSortOption(e.target.value);
 
   const getSortedData = (data) => {
     switch (sortOption) {
@@ -91,18 +84,16 @@ const Sales = ({ selectedTimePeriod }) => {
     }
   };
 
-  const filteredSalesData = salesData
-    .filter((sale) => {
-      return (
-        sale.invoiceNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.customerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.phoneNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.items.some((item) =>
-          item.name?.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    })
-    .map((sale) => ({ ...sale }));
+  const filteredSalesData = salesData.filter((sale) => {
+    const searchTerm = searchQuery.toLowerCase();
+    return (
+      sale.invoiceNumber?.toLowerCase().includes(searchTerm) ||
+      sale.customerName?.toLowerCase().includes(searchTerm) ||
+      sale.phoneNumber?.toLowerCase().includes(searchTerm) ||
+      sale.items.some((item) => item.name?.toLowerCase().includes(searchTerm))
+    );
+  });
+
   const sortedAndFilteredSalesData = getSortedData(filteredSalesData);
 
   return (
@@ -159,19 +150,21 @@ const Sales = ({ selectedTimePeriod }) => {
               <td data-label="Invoice Number">{sale.invoiceNumber}</td>
               <td data-label="Customer Name">{sale.customerName || "N/A"}</td>
               <td data-label="Phone Number">{sale.phoneNumber || "N/A"}</td>
-              <td data-label="Total">₨ {(sale.total || 0).toFixed(2)}</td>
+              <td data-label="Total">
+                ₨ {parseFloat(sale.total || 0).toFixed(2)}
+              </td>
               <td data-label="Total Profit">
-                ₨ {(sale.totalProfit || 0).toFixed(2)}
+                ₨ {parseFloat(sale.totalProfit || 0).toFixed(2)}
               </td>
               <td data-label="Total Loss">
-                ₨ {(sale.totalLoss || 0).toFixed(2)}
+                ₨ {parseFloat(sale.totalLoss || 0).toFixed(2)}
               </td>
               <td data-label="Items">
                 <ul>
                   {sale.items.map((item, itemIndex) => (
                     <li key={itemIndex}>
                       {item.name} - {item.quantity} x ₨{" "}
-                      {(item.price || 0).toFixed(2)}
+                      {parseFloat(item.price || 0).toFixed(2)}
                     </li>
                   ))}
                 </ul>
@@ -199,4 +192,4 @@ const Sales = ({ selectedTimePeriod }) => {
   );
 };
 
-export default Sales;
+export default ViewSales;

@@ -1,0 +1,109 @@
+/* General Styles */
+.unique-update-sales-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.unique-search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.unique-sales-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.unique-sale-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.unique-sale-item:hover {
+  background-color: #f1f1f1;
+}
+
+.unique-invoice-input,
+.unique-sales-data-input,
+.unique-item-input {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.unique-sales-data-section {
+  margin-bottom: 20px;
+}
+
+.unique-item-section {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.unique-remove-item-button,
+.unique-add-item-button,
+.unique-update-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.unique-remove-item-button:hover,
+.unique-add-item-button:hover,
+.unique-update-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .unique-update-sales-section {
+    padding: 10px;
+  }
+
+  .unique-item-input {
+    width: calc(100% - 20px);
+  }
+
+  .unique-remove-item-button,
+  .unique-add-item-button,
+  .unique-update-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .unique-search-input,
+  .unique-invoice-input,
+  .unique-sales-data-input,
+  .unique-item-input {
+    width: calc(100% - 18px);
+  }
+}

@@ -11,6 +11,7 @@ const CustomerDetails = React.memo(
           placeholder="Customer Name"
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
+          required
         />
         <input
           className="customer-input-unique"
@@ -18,6 +19,7 @@ const CustomerDetails = React.memo(
           placeholder="Phone Number"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
+          required
         />
       </div>
     );

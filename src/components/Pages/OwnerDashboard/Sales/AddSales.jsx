@@ -21,6 +21,8 @@ const AddSales = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [lastInvoiceNumber, setLastInvoiceNumber] = useState(0);
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [highlightedFields, setHighlightedFields] = useState({});
 
   useEffect(() => {
     fetchInventoryData();
@@ -28,7 +30,9 @@ const AddSales = () => {
   }, []);
 
   const generateInvoiceNumber = useCallback(() => {
+    setLoading(true);
     setInvoiceNumber(`INV-${String(lastInvoiceNumber + 1).padStart(2, "0")}`);
+    setLoading(false);
   }, [lastInvoiceNumber]);
 
   useEffect(() => {
@@ -137,10 +141,18 @@ const AddSales = () => {
   };
 
   const handleSubmitSale = async () => {
+    let newHighlightedFields = {};
+    if (!customerName) newHighlightedFields.customerName = true;
+    if (!phoneNumber) newHighlightedFields.phoneNumber = true;
+
+    setHighlightedFields(newHighlightedFields);
+
     if (!customerName || !phoneNumber) {
       toast.error("Customer details are required!");
       return;
     }
+
+    setLoading(true);
 
     const database = getDatabase(app);
     const updates = {};
@@ -196,8 +208,6 @@ const AddSales = () => {
       date: new Date().toISOString(),
     };
 
-    console.log("Invoice Data:", invoiceData); // Log the invoice data for debugging
-
     try {
       await update(ref(database), updates);
       await set(ref(database, `sales/${invoiceNumber}`), invoiceData);
@@ -212,6 +222,8 @@ const AddSales = () => {
     } catch (error) {
       console.error("Error submitting sale:", error);
       toast.error("Failed to submit sale!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -233,6 +245,7 @@ const AddSales = () => {
         setCustomerName={setCustomerName}
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
+        highlightedFields={highlightedFields}
       />
       <SearchSection
         searchTerm={searchTerm}
@@ -262,8 +275,15 @@ const AddSales = () => {
       <button
         className="add-sales-submit-button-unique"
         onClick={handleSubmitSale}
+        disabled={loading}
       >
-        Submit Sale
+        {loading ? (
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          "Submit Sale"
+        )}
       </button>
     </div>
   );

@@ -13,7 +13,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
 import AddSales from "./Sales/AddSales";
 import Pending from "./Dashboard/Pending/Pending";
-import Sales from "./Dashboard/Sales/sales";
+import Sales from "./Dashboard/SalesData/Sales";
 
 import ShowExpenses from "./Inventory/Expenses/Show Expensis/Show Expenses";
 

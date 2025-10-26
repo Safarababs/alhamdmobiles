@@ -24,6 +24,12 @@ const Sidebar = ({
         >
           <span className="alhamd-icon">📦</span> Inventory
         </li>
+        <li
+          className={activeComponent === "purchaseinventory" ? "active" : ""}
+          onClick={() => handleSetActivePage("purchaseinventory")}
+        >
+          <span className="alhamd-icon">📦</span> Purchased INV
+        </li>
 
         <li
           className={activeComponent === "addsales" ? "active" : ""}

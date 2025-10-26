@@ -8,6 +8,7 @@ import "./OwnerDashboard.css";
 import Dashboard from "./Dashboard/Dashboard";
 import Orders from "./Orders/Orders";
 import Inventory from "./Inventory/Inventory";
+import ViewPurchasedInventory from "./Inventory/ViewInventory/ViewPurchasedOnly";
 
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header/Header";
@@ -220,6 +221,9 @@ const OwnerDashboard = () => {
           )}
           {activeComponent === "orders" && <Orders />}
           {activeComponent === "inventory" && <Inventory />}
+          {activeComponent === "purchaseinventory" && (
+            <ViewPurchasedInventory />
+          )}
           {activeComponent === "expenses" && <ShowExpenses />}
           {activeComponent === "addsales" && <AddSales />}
           {activeComponent === "pendingAmount" && <Pending />}

@@ -82,7 +82,7 @@ const ViewPurchasedInventory = ({ onDelete, onUpdate }) => {
   );
 
   const coverItems = sortedInventory.filter((item) =>
-    item.name.toLowerCase().includes("cover")
+    item.name.toLowerCase().includes("case")
   );
 
   const totalCoverQty = coverItems.reduce(
